@@ -12,11 +12,12 @@ void GameContainer::addRenderable(Renderable *element) {
 }
 
 bool GameContainer::removeRenderable(Renderable *element) {
-    for (Renderable *e: renderables){
+//    for (Renderable *e: renderables){
 //        if (e == element){ //TODO: Override == operator
 //
 //        }
-    }
+//    }
+    return false;
 }
 
 bool GameContainer::init() {

@@ -8,19 +8,18 @@
 #include "Lights/LightSource.h"
 #include "Elements/Block.h"
 
-Level::Level(int width, int height) {
+Level::Level(int width, int height)
+        : tiles(2, std::vector< Tile * >((unsigned long) width * height)){
+
     this->width = width;
     this->height = height;
 }
 
 void Level::init(){
-    tiles = new Tile**[2];
-    tiles[0] = new Tile*[width * height];
-    tiles[1] = new Tile*[width * height];
     for (int y = 0; y < height; ++y ){
         for (int x = 0; x < width; ++x ){
-            tiles[0][x + y * width] = NULL;
-            tiles[1][x + y * width] = NULL;
+            tiles[0][x + y * width] = nullptr;
+            tiles[1][x + y * width] = nullptr;
         }
     }
 }
@@ -122,4 +121,11 @@ void Level::renderLayer(int layer, sf::RenderWindow *w, Camera *c) {
 
 Tile* Level::operator()(int layer, int element) {
     return tiles[layer][element];
+}
+
+Level::~Level() {
+    for ( tilesLayers t : tiles ) {
+        t.clear();
+    }
+    tiles.clear();
 }

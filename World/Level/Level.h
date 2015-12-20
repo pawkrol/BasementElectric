@@ -17,7 +17,9 @@ class LightSource;
 
 class Level {
 private:
-    Tile ***tiles;
+    typedef std::vector< Tile * > tilesLayers;
+    typedef std::vector< tilesLayers > tiledMap;
+    tiledMap tiles;
 
     LightSource *playerLight;
 
@@ -47,6 +49,8 @@ public:
     sf::Vector2f getPlayerSpawnPoint();
 
     Tile* operator()(int layer, int element);
+
+    ~Level();
 };
 
 

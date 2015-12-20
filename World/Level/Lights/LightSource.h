@@ -12,17 +12,16 @@ class LightSource {
 protected:
     const sf::Uint8 _maxDarkness = 255;
     int distance = 0;
-
     int distanceMult = 1;
+
     float x;
-
     float y;
-    int levelWidth;
 
+    int levelWidth;
     int levelHeight;
-    Level *level;
 
     Entity *entity;
+    Level *level;
 
     void calcDarkness(Tile *from, Tile *to);
     void setDarknessLevels();

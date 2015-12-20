@@ -11,6 +11,8 @@
 class Command {
 public:
     virtual void execute(Player &player) = 0;
+
+    virtual ~Command(){ };
 };
 
 
