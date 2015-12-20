@@ -82,10 +82,9 @@ void LightSource::setDarknessLevels() {
 
 
 void LightSource::calcDarkness(Tile* from, Tile *to) {
-    int distance;
-
-    distance = int(sqrt((to->x - from->x)*(to->x - from->x)
+    int distance = int(sqrt((to->x - from->x)*(to->x - from->x)
                         + (to->y - from->y)*(to->y - from->y)));
+
     if (distance > -1 && distance < this->distance)
         from->setDarkness(sf::Uint8( _maxDarkness - distanceMult*distance ));
 }

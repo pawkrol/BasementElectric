@@ -9,7 +9,7 @@
 ScreenComponent::ScreenComponent() { }
 
 void ScreenComponent::createWindow() {
-    if (window == NULL) {
+    if (window == nullptr) {
         window = new sf::RenderWindow(sf::VideoMode(width, height), "DudesPatrol",
                                         sf::Style::None);
         window->setVerticalSyncEnabled(true);
@@ -33,7 +33,7 @@ void ScreenComponent::checkWindowEvent() {
 
 //PUBLIC
 
-ScreenComponent::ScreenComponent(int width, int height) {
+ScreenComponent::ScreenComponent(unsigned int width, unsigned int height) : window(nullptr) {
     this->width = width;
     this->height = height;
 

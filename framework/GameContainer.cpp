@@ -8,11 +8,11 @@
 GameContainer::GameContainer() { }
 
 void GameContainer::addRenderable(Renderable *element) {
-    Renderables.push_back(element);
+    renderables.push_back(element);
 }
 
 bool GameContainer::removeRenderable(Renderable *element) {
-    for (Renderable *e: Renderables){
+    for (Renderable *e: renderables){
 //        if (e == element){ //TODO: Override == operator
 //
 //        }
@@ -29,9 +29,8 @@ bool GameContainer::init() {
     player = new Player(spawn.x, spawn.y);
     level->initLights(player);
 
-    for (Renderable *r: Renderables){
-        r->init();
-    }
+    level->pushRenderables(renderables);
+    addRenderable(player);
 
     return true;
 }
@@ -43,21 +42,20 @@ void GameContainer::update() {
         command = NULL;
     }
 
-    player->update();
-    camera->update(player->x, player->y);
-    level->update();
-
-    for (Renderable *r: Renderables){
+    for (Renderable *r: renderables){
         r->update();
     }
+
+    camera->update(player->x, player->y);
+    level->update();
 }
 
 void GameContainer::render(sf::RenderWindow *w) { //TODO: This is just temp, add depth sorting etc.
-    level->render(0, w, camera);
-    player->render(w, camera);
-    level->render(1, w, camera);
+    sortRenderables();
 
-    for (Renderable *r: Renderables){
+    level->render(0, w, camera);
+
+    for (Renderable *r: renderables){
         r->render(w, camera);
     }
 }
@@ -67,6 +65,18 @@ void GameContainer::createCamera(sf::RenderWindow *w) {
     sf::Vector2f size(cameraSize.x, cameraSize.y);
     sf::Vector2f center(0, 0);
     camera = new Camera(w, size, center);
+}
+
+void GameContainer::sortRenderables() {
+    std::sort(renderables.begin(), renderables.end(),
+              [](Renderable *a, Renderable *b) -> bool {
+                  return a->x < b->x;
+              });
+
+    std::sort(renderables.begin(), renderables.end(),
+              [](Renderable *a, Renderable *b) -> bool {
+                  return a->y < b->y;
+              });
 }
 
 GameContainer::~GameContainer() {

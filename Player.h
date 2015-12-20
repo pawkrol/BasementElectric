@@ -12,7 +12,7 @@
 
 class Player : public Entity{
 private:
-    const int viewDistance = 64;
+    const int viewDistance = 128;
 
     sf::Clock frameClock;
     sf::Time frameTime;

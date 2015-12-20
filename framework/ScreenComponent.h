@@ -12,8 +12,8 @@ class ScreenComponent {
 private:
     ScreenComponent();
 
-    int width;
-    int height;
+    unsigned int width;
+    unsigned int height;
 
     sf::RenderWindow *window;
     sf::Event event;
@@ -25,7 +25,7 @@ private:
     void checkWindowEvent();
 
 public:
-    ScreenComponent(int width, int height);
+    ScreenComponent(unsigned int width, unsigned int height);
     ~ScreenComponent();
 
     void init();

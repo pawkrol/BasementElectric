@@ -46,17 +46,17 @@ bool Level::load(std::string levelFile) {
             color = level.getPixel(x, y);
 
             if (color == sf::Color::Black){
-                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/4, y * Tile::HEIGHT/4);
+                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
             }
 
             if (color == sf::Color::Red){
                 playerSpawn.x = x * Tile::WIDTH/2;
                 playerSpawn.y = y * Tile::HEIGHT/2;
-                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/4, y * Tile::HEIGHT/4);
+                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
             }
 
             if (color == sf::Color::Blue){
-                tiles[1][x + y * width] = new Block(x * Tile::WIDTH/4, y * Tile::HEIGHT/4);
+                tiles[1][x + y * width] = new Block(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
             }
 
         }
@@ -94,6 +94,16 @@ sf::Vector2i Level::getSize() {
 }
 
 void Level::setTile(sf::Vector2f pos, Tile tile) {
+}
+
+void Level::pushRenderables(std::vector<Renderable *> &renderables) {
+    for (int y = 0; y < height; ++y ){
+        for (int x = 0; x < width; ++x ){
+            if (tiles[1][x + y * width] != NULL) {
+                renderables.push_back(tiles[1][x + y * width]);
+            }
+        }
+    }
 }
 
 sf::Vector2f Level::getPlayerSpawnPoint() {

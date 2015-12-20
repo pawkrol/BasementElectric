@@ -38,6 +38,7 @@ public:
     void render(int layer, sf::RenderWindow *w, Camera *c);
 
     void setTile(sf::Vector2f pos, Tile tile);
+    void pushRenderables(std::vector<Renderable *> &renderables);
 
     Tile* getTile(sf::Vector2i pos);
     Tile* getTile(int x, int y);

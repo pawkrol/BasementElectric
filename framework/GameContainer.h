@@ -15,7 +15,7 @@
 
 class GameContainer {
 private:
-    std::vector<Renderable*> Renderables;
+    std::vector<Renderable*> renderables;
 
     Level *level;
     Camera *camera;
@@ -35,6 +35,7 @@ public:
 
     void addRenderable(Renderable *element);
     bool removeRenderable(Renderable *element);
+    void sortRenderables();
 
     void createCamera(sf::RenderWindow *w);
 };
