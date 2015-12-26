@@ -9,8 +9,5 @@ MoveUpCommand::~MoveUpCommand() {
 }
 
 void MoveUpCommand::execute(Player &player) {
-    player.toCarCords();
-    player.y -= player.getSpeed();
-    player.setFacing(player.UP);
-    player.toIsoCords();
+    player.movePlayer(player.UP);
 }

@@ -25,5 +25,5 @@ void Block::init() {
 }
 
 void Block::update() {
-    setDarkness(_defaultDarkness);
+    setDarkness(defaultDarkness);
 }

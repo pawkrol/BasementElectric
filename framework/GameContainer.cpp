@@ -4,6 +4,7 @@
 
 #include "../include/Renderable.h"
 #include "GameContainer.h"
+#include "../World/Level/Elements/Block.h"
 
 GameContainer::GameContainer() { }
 
@@ -51,7 +52,7 @@ void GameContainer::update() {
     level->update();
 }
 
-void GameContainer::render(sf::RenderWindow *w) { //TODO: This is just temp, add depth sorting etc.
+void GameContainer::render(sf::RenderWindow *w) {
     sortRenderables();
 
     level->render(0, w, camera);

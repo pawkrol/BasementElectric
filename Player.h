@@ -40,10 +40,10 @@ public:
     void init();
     void update();
     void render(sf::RenderWindow *w, Camera *c);
-    void setFacing(Facing facing);
+    void movePlayer(Facing direction);
+
     sf::Vector2f getPosition();
 
-    double getSpeed();
     int getViewDistance();
 };
 

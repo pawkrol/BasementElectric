@@ -8,9 +8,6 @@
 #include "Tile.h"
 
 class Block : public Tile{
-private:
-    const sf::Uint8 _defaultDarkness = 0;
-
 public:
     Block(float x, float y);
 

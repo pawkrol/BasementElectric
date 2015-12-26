@@ -7,8 +7,5 @@
 MoveRightCommand::~MoveRightCommand() { }
 
 void MoveRightCommand::execute(Player &player) {
-    player.toCarCords();
-    player.x += player.getSpeed();
-    player.setFacing(player.RIGHT);
-    player.toIsoCords();
+    player.movePlayer(player.RIGHT);
 }

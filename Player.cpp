@@ -82,24 +82,31 @@ void Player::render(sf::RenderWindow *w, Camera *c) {
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
-void Player::setFacing(Facing facing) {
-    if (facing == DOWN){
+void Player::movePlayer(Facing direction) { // isMoving = false; if (keypressed) isMoving = true;
+    toCarCords();
+
+    if (direction == DOWN){
         animation = &goingDownAnim;
-    } else if (facing == UP){
+        y += speed;
+
+    } else if (direction == UP){
         animation = &goingUpAnim;
-    }else if (facing == LEFT){
+        y -= speed;
+
+    }else if (direction == LEFT){
         animation = &goingLeftAnim;
-    }else if (facing == RIGHT){
+        x -= speed;
+
+    }else if (direction == RIGHT){
         animation = &goingRightAnim;
+        x += speed;
     }
+
+    toIsoCords();
 }
 
 sf::Vector2f Player::getPosition() {
     return sf::Vector2f(x, y);
-}
-
-double Player::getSpeed() {
-    return speed;
 }
 
 int Player::getViewDistance() {

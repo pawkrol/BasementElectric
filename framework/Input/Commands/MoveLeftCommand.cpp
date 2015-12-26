@@ -7,8 +7,5 @@
 MoveLeftCommand::~MoveLeftCommand() { }
 
 void MoveLeftCommand::execute(Player &player) {
-    player.toCarCords();
-    player.x -= player.getSpeed();
-    player.setFacing(player.LEFT);
-    player.toIsoCords();
+    player.movePlayer(player.LEFT);
 }

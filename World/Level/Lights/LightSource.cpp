@@ -21,8 +21,8 @@ LightSource::LightSource(Level *level) : entity(NULL){
 
 void LightSource::setLightSource(Entity *entity) {
     entity->toCarCords();
-    this->x = entity->x / 16;
-    this->y = entity->y / 16;
+    this->x = (entity->x / (Tile::WIDTH/2)) + 1;
+    this->y = (entity->y / (Tile::HEIGHT/2)) + 1;
     entity->toIsoCords();
 
     this->entity = entity;
@@ -40,14 +40,14 @@ void LightSource::setLightSource(float x, float y) {
 
 void LightSource::setLightDistance(int distance) {
     this->distance = distance;
-    distanceMult = 256 / distance;
+    distanceMult = (_maxDarkness + 1) / distance;
 }
 
 void LightSource::update() {
     if (entity != NULL) {
         entity->toCarCords();
-        this->x = (entity->x / 16) + 1;
-        this->y = (entity->y / 16) + 1;
+        this->x = (entity->x / (Tile::WIDTH/2)) + 1;
+        this->y = (entity->y / (Tile::HEIGHT/2)) + 1;
         entity->toIsoCords();
     }
 
@@ -82,9 +82,15 @@ void LightSource::setDarknessLevels() {
 
 
 void LightSource::calcDarkness(Tile* from, Tile *to) {
+    to->toCarCords();
+    from->toCarCords();
+
     int distance = int(sqrt((to->x - from->x)*(to->x - from->x)
                         + (to->y - from->y)*(to->y - from->y)));
 
     if (distance > -1 && distance < this->distance)
         from->setDarkness(sf::Uint8( _maxDarkness - distanceMult*distance ));
+
+    to->toIsoCords();
+    from->toIsoCords();
 }

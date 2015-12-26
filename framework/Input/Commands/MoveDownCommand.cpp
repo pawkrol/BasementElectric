@@ -9,8 +9,5 @@ MoveDownCommand::~MoveDownCommand() {
 }
 
 void MoveDownCommand::execute(Player &player) {
-    player.toCarCords();
-    player.y += player.getSpeed();
-    player.setFacing(player.DOWN);
-    player.toIsoCords();
+    player.movePlayer(player.DOWN);
 }
