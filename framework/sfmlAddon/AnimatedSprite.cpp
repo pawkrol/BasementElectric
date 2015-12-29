@@ -119,7 +119,7 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime)
 {
     if (m_animation)
     {
-        //calculate new vertex positions and texture coordiantes
+        //calculate new vertex positions and walkSprites coordiantes
         sf::IntRect rect = m_animation->getFrame(newFrame);
 
         m_vertices[0].position = sf::Vector2f(0.f, 0.f);

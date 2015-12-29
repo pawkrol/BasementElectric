@@ -17,8 +17,13 @@ private:
     const int viewDistance = 128;
     float speed = 34.f;
 
+    bool _isMoving;
+
     sf::Clock frameClock;
     sf::Time deltaTime;
+
+    sf::Texture walkSprites;
+    sf::Texture idleSprites;
 
     AnimatedSprite *animatedSprite;
     Animation *animation;
@@ -26,6 +31,10 @@ private:
     Animation goingDownAnim;
     Animation goingLeftAnim;
     Animation goingRightAnim;
+    Animation idleUpAnimation;
+    Animation idleDownAnimation;
+    Animation idleLeftAnimation;
+    Animation idleRightAnimation;
 
     void updateIsoPosition(sf::Vector2f pos);
 
@@ -33,11 +42,14 @@ private:
     void update(){};
 
     void setUpAnimations();
+    void setCurrentAnimation();
 
 public:
     enum Facing{
         UP, DOWN, LEFT, RIGHT
     };
+
+    Facing prevFacing;
 
     Player(float x, float y, float width, float height);
 

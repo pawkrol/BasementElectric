@@ -17,12 +17,17 @@ Player::Player(float x, float y, float width, float height) {
     moveVector.x = x;
     moveVector.y = y;
 
+    prevFacing = DOWN;
+
     init();
 }
 
 void Player::init() {
-    if (!texture.loadFromFile("res/playerWalk.png")){
-        throw GameException("Exception: Can't load player texture");
+    if (!walkSprites.loadFromFile("res/playerWalk.png")){
+        throw GameException("Exception: Can't load player walkSprites");
+    }
+    if (!idleSprites.loadFromFile("res/playerIdle.png")){
+        throw GameException("Exception: Can't load player idleSprites");
     }
 
     setUpAnimations();
@@ -35,13 +40,30 @@ void Player::update(std::vector<Renderable *> obstacles) {
     if (!checkCollision(obstacles))
         updateIsoPosition(moveVector);
 
+    setCurrentAnimation();
+
+    _isMoving = false;
+}
+
+void Player::setCurrentAnimation() {
+    if (!_isMoving){
+        if (prevFacing == DOWN)
+            animation = &idleDownAnimation;
+        else if (prevFacing == UP)
+            animation = &idleUpAnimation;
+        else if (prevFacing == LEFT)
+            animation = &idleLeftAnimation;
+        else if (prevFacing == RIGHT)
+            animation = &idleRightAnimation;
+    }
+
     animatedSprite->update(deltaTime);
     animatedSprite->setPosition(x, y);
     animatedSprite->play(*animation);
 }
 
 void Player::setUpAnimations() {
-    goingLeftAnim.setSpriteSheet(texture);
+    goingLeftAnim.setSpriteSheet(walkSprites);
     goingLeftAnim.addFrame(sf::IntRect(0, 0, 32, 32));
     goingLeftAnim.addFrame(sf::IntRect(32, 0, 32, 32));
     goingLeftAnim.addFrame(sf::IntRect(64, 0, 32, 32));
@@ -51,7 +73,7 @@ void Player::setUpAnimations() {
     goingLeftAnim.addFrame(sf::IntRect(192, 0, 32, 32));
     goingLeftAnim.addFrame(sf::IntRect(224, 0, 32, 32));
 
-    goingUpAnim.setSpriteSheet(texture);
+    goingUpAnim.setSpriteSheet(walkSprites);
     goingUpAnim.addFrame(sf::IntRect(0, 32, 32, 32));
     goingUpAnim.addFrame(sf::IntRect(32, 32, 32, 32));
     goingUpAnim.addFrame(sf::IntRect(64, 32, 32, 32));
@@ -61,7 +83,7 @@ void Player::setUpAnimations() {
     goingUpAnim.addFrame(sf::IntRect(192, 32, 32, 32));
     goingUpAnim.addFrame(sf::IntRect(224, 32, 32, 32));
 
-    goingDownAnim.setSpriteSheet(texture);
+    goingDownAnim.setSpriteSheet(walkSprites);
     goingDownAnim.addFrame(sf::IntRect(0, 64, 32, 32));
     goingDownAnim.addFrame(sf::IntRect(32, 64, 32, 32));
     goingDownAnim.addFrame(sf::IntRect(64, 64, 32, 32));
@@ -71,7 +93,7 @@ void Player::setUpAnimations() {
     goingDownAnim.addFrame(sf::IntRect(192, 64, 32, 32));
     goingDownAnim.addFrame(sf::IntRect(224, 64, 32, 32));
 
-    goingRightAnim.setSpriteSheet(texture);
+    goingRightAnim.setSpriteSheet(walkSprites);
     goingRightAnim.addFrame(sf::IntRect(0, 96, 32, 32));
     goingRightAnim.addFrame(sf::IntRect(32, 96, 32, 32));
     goingRightAnim.addFrame(sf::IntRect(64, 96, 32, 32));
@@ -81,7 +103,18 @@ void Player::setUpAnimations() {
     goingRightAnim.addFrame(sf::IntRect(192, 96, 32, 32));
     goingRightAnim.addFrame(sf::IntRect(224, 96, 32, 32));
 
-    animation = &goingDownAnim;
+    idleUpAnimation.setSpriteSheet(idleSprites);
+    idleUpAnimation.addFrame(sf::IntRect(0, 0, 32, 32));
+
+    idleLeftAnimation.setSpriteSheet(idleSprites);
+    idleLeftAnimation.addFrame(sf::IntRect(32, 0, 32, 32));
+
+    idleRightAnimation.setSpriteSheet(idleSprites);
+    idleRightAnimation.addFrame(sf::IntRect(64, 0, 32, 32));
+
+    idleDownAnimation.setSpriteSheet(idleSprites);
+    idleDownAnimation.addFrame(sf::IntRect(96, 0, 32, 32));
+
     animatedSprite = new AnimatedSprite(sf::seconds(0.12), true, false);
 }
 
@@ -92,24 +125,30 @@ void Player::render(sf::RenderWindow *w, Camera *c) {
 void Player::movePlayer(Facing direction) {
     toCarCords();
 
+    prevFacing = direction;
+
     moveVector.x = x;
     moveVector.y = y;
 
     if (direction == DOWN){
         animation = &goingDownAnim;
         moveVector.y = y + speed * deltaTime.asSeconds();
+        _isMoving = true;
 
     } else if (direction == UP){
         animation = &goingUpAnim;
         moveVector.y = y - speed * deltaTime.asSeconds();
+        _isMoving = true;
 
     } else if (direction == LEFT){
         animation = &goingLeftAnim;
         moveVector.x = x - speed * deltaTime.asSeconds();
+        _isMoving = true;
 
     } else if (direction == RIGHT){
         animation = &goingRightAnim;
         moveVector.x = x + speed * deltaTime.asSeconds();
+        _isMoving = true;
     }
 
     toIsoCords();
