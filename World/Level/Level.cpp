@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "Lights/LightSource.h"
 #include "Elements/Block.h"
+#include "../../framework/GameException.h"
 
 Level::Level(int width, int height)
         : tiles(2, std::vector< Tile * >((unsigned long) width * height)){
@@ -36,7 +37,7 @@ bool Level::load(std::string levelFile) {
 
     sf::Image level;
     if (!level.loadFromFile(levelFile)){
-        return false;
+        throw GameException("Exception: Can't load level");
     }
 
     sf::Color color;
@@ -56,6 +57,7 @@ bool Level::load(std::string levelFile) {
 
             if (color == sf::Color::Blue){
                 tiles[1][x + y * width] = new Block(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                obstacles.push_back(tiles[1][x + y * width]);
             }
 
         }
@@ -65,6 +67,17 @@ bool Level::load(std::string levelFile) {
 }
 
 void Level::update() {
+    for (int y = 0; y < height; ++y ){
+        for (int x = 0; x < width; ++x ){
+            if (tiles[0][x + y * width] != nullptr) {
+                tiles[0][x + y * width]->update();
+            }
+            if (tiles[1][x + y * width] != nullptr) {
+                tiles[1][x + y * width]->update();
+            }
+        }
+    }
+
     playerLight->update();
 }
 
@@ -77,7 +90,7 @@ Tile* Level::getTile(sf::Vector2i pos) {
     if (index < width*height)
         return tiles[0][index];
     else
-        return NULL;
+        return nullptr;
 }
 
 Tile* Level::getTile(int x, int y) {
@@ -85,24 +98,20 @@ Tile* Level::getTile(int x, int y) {
     if (index < width*height)
         return tiles[0][index];
     else
-        return NULL;
+        return nullptr;
 }
 
 sf::Vector2i Level::getSize() {
     return sf::Vector2i(width, height);
 }
 
-void Level::setTile(sf::Vector2f pos, Tile tile) {
+void Level::setTile(sf::Vector2i pos, int layer, Tile *tile) {
+    int index = pos.x + pos.y * width;
+    tiles[layer][index] = tile;
 }
 
-void Level::pushRenderables(std::vector<Renderable *> &renderables) {
-    for (int y = 0; y < height; ++y ){
-        for (int x = 0; x < width; ++x ){
-            if (tiles[1][x + y * width] != NULL) {
-                renderables.push_back(tiles[1][x + y * width]);
-            }
-        }
-    }
+std::vector<Renderable *> Level::getObstacles() {
+    return obstacles;
 }
 
 sf::Vector2f Level::getPlayerSpawnPoint() {

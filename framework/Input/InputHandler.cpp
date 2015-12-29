@@ -29,7 +29,7 @@ Command* InputHandler::handleInput() {
         return this->buttonD;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void InputHandler::clear() {

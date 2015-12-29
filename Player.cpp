@@ -6,26 +6,36 @@
 #include <SFML/Window/Keyboard.hpp>
 
 #include "Player.h"
+#include "framework/GameException.h"
 
-Player::Player(float x, float y) {
+Player::Player(float x, float y, float width, float height) {
     this->x = x;
     this->y = y;
+    this->width = width;
+    this->height = height;
+
+    moveVector.x = x;
+    moveVector.y = y;
 
     init();
 }
 
 void Player::init() {
     if (!texture.loadFromFile("res/playerWalk.png")){
-        std::cout << "CAN'T LOAD PLAYER TEXTURE" << std::endl;
+        throw GameException("Exception: Can't load player texture");
     }
 
     setUpAnimations();
     toIsoCords();
 }
 
-void Player::update() {
-    frameTime = frameClock.restart();
-    animatedSprite->update(frameTime);
+void Player::update(std::vector<Renderable *> obstacles) {
+    deltaTime = frameClock.restart();
+
+    if (!checkCollision(obstacles))
+        updateIsoPosition(moveVector);
+
+    animatedSprite->update(deltaTime);
     animatedSprite->setPosition(x, y);
     animatedSprite->play(*animation);
 }
@@ -79,29 +89,36 @@ void Player::render(sf::RenderWindow *w, Camera *c) {
     w->draw(*animatedSprite);
 }
 
-void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-}
-
-void Player::movePlayer(Facing direction) { // isMoving = false; if (keypressed) isMoving = true;
+void Player::movePlayer(Facing direction) {
     toCarCords();
+
+    moveVector.x = x;
+    moveVector.y = y;
 
     if (direction == DOWN){
         animation = &goingDownAnim;
-        y += speed;
+        moveVector.y = y + speed * deltaTime.asSeconds();
 
     } else if (direction == UP){
         animation = &goingUpAnim;
-        y -= speed;
+        moveVector.y = y - speed * deltaTime.asSeconds();
 
-    }else if (direction == LEFT){
+    } else if (direction == LEFT){
         animation = &goingLeftAnim;
-        x -= speed;
+        moveVector.x = x - speed * deltaTime.asSeconds();
 
-    }else if (direction == RIGHT){
+    } else if (direction == RIGHT){
         animation = &goingRightAnim;
-        x += speed;
+        moveVector.x = x + speed * deltaTime.asSeconds();
     }
 
+    toIsoCords();
+}
+
+void Player::updateIsoPosition(sf::Vector2f pos) {
+    toCarCords();
+        x = pos.x;
+        y = pos.y;
     toIsoCords();
 }
 

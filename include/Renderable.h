@@ -18,6 +18,8 @@ protected:
 public:
     float x;
     float y;
+    float width;
+    float height;
 
     virtual void init() = 0;
     virtual void update() = 0;

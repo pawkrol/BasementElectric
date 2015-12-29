@@ -10,6 +10,9 @@
 Tile::Tile() {
     this->x = 0;
     this->y = 0;
+    this->width = WIDTH;
+    this->height = HEIGHT;
+
     this->darkness = 255;
 
     init();
@@ -18,6 +21,9 @@ Tile::Tile() {
 Tile::Tile(float x, float y) {
     this->x = x;
     this->y = y;
+    this->width = WIDTH;
+    this->height = HEIGHT;
+
     this->darkness = 0;
 
     init();

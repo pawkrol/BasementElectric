@@ -21,6 +21,8 @@ private:
     typedef std::vector< tilesLayers > tiledMap;
     tiledMap tiles;
 
+    std::vector<Renderable *> obstacles;
+
     LightSource *playerLight;
 
     int width;
@@ -39,8 +41,8 @@ public:
     void update();
     void render(int layer, sf::RenderWindow *w, Camera *c);
 
-    void setTile(sf::Vector2f pos, Tile tile);
-    void pushRenderables(std::vector<Renderable *> &renderables);
+    void setTile(sf::Vector2i pos, int layer, Tile *tile);
+    std::vector<Renderable *> getObstacles();
 
     Tile* getTile(sf::Vector2i pos);
     Tile* getTile(int x, int y);

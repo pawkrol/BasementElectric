@@ -5,6 +5,7 @@
 #include "../include/Renderable.h"
 #include "GameContainer.h"
 #include "../World/Level/Elements/Block.h"
+#include "GameException.h"
 
 GameContainer::GameContainer() { }
 
@@ -12,26 +13,30 @@ void GameContainer::addRenderable(Renderable *element) {
     renderables.push_back(element);
 }
 
+void GameContainer::addRenderables(std::vector<Renderable *> obstacles) {
+    renderables.insert(std::end(renderables),
+                       std::begin(obstacles), std::end(obstacles));
+}
+
 bool GameContainer::removeRenderable(Renderable *element) {
-//    for (Renderable *e: renderables){
-//        if (e == element){ //TODO: Override == operator
-//
-//        }
-//    }
     return false;
 }
 
 bool GameContainer::init() {
-    level = new Level(32, 32);
-    if (!level->load("res/level2.png")){
-        return false;
+    try {
+        level = new Level(32, 32);
+        level->load("res/level2.png");
+
+        sf::Vector2f spawn = level->getPlayerSpawnPoint();
+        player = new Player(spawn.x, spawn.y, 32, 32);
+
+    } catch (GameException &e){
+        printf(e.what());
     }
 
-    sf::Vector2f spawn = level->getPlayerSpawnPoint();
-    player = new Player(spawn.x, spawn.y);
     level->initLights(player);
 
-    level->pushRenderables(renderables);
+    addRenderables(level->getObstacles());
     addRenderable(player);
 
     return true;
@@ -41,12 +46,10 @@ void GameContainer::update() {
     command = inputHandler.handleInput();
     if (command){
         command->execute(*player);
-        command = NULL;
+        command = nullptr;
     }
 
-    for (Renderable *r: renderables){
-        r->update();
-    }
+    player->update(level->getObstacles());
 
     camera->update(player->x, player->y);
     level->update();

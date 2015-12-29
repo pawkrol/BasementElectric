@@ -18,7 +18,7 @@ set(SOURCE_FILES main.cpp
             framework/sfmlAddon/Animation.h framework/sfmlAddon/AnimatedSprite.cpp
         framework/sfmlAddon/AnimatedSprite.h World/Level/Elements/Block.cpp
             World/Level/Elements/Block.h World/Level/Lights/LightSource.cpp
-        World/Level/Lights/LightSource.h)
+        World/Level/Lights/LightSource.h framework/GameException.h )
 
 add_executable(DudesPatrol ${SOURCE_FILES})
 

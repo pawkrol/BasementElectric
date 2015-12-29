@@ -35,6 +35,7 @@ public:
 
     void addRenderable(Renderable *element);
     bool removeRenderable(Renderable *element);
+    void addRenderables(std::vector<Renderable *> obstacles);
     void sortRenderables();
 
     void createCamera(sf::RenderWindow *w);

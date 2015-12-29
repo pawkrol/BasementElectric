@@ -7,15 +7,18 @@
 
 
 #include <SFML/Graphics/VertexArray.hpp>
+
 #include "include/Entity.h"
 #include "framework/sfmlAddon/AnimatedSprite.h"
+#include "World/Level/Elements/Tile.h"
 
 class Player : public Entity{
 private:
     const int viewDistance = 128;
+    float speed = 34.f;
 
     sf::Clock frameClock;
-    sf::Time frameTime;
+    sf::Time deltaTime;
 
     AnimatedSprite *animatedSprite;
     Animation *animation;
@@ -24,21 +27,22 @@ private:
     Animation goingLeftAnim;
     Animation goingRightAnim;
 
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+    void updateIsoPosition(sf::Vector2f pos);
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const {};
+    void update(){};
+
     void setUpAnimations();
 
 public:
-    static const int WIDTH = 32;
-    static const int HEIGHT = 32;
-
     enum Facing{
         UP, DOWN, LEFT, RIGHT
     };
 
-    Player(float x, float y);
+    Player(float x, float y, float width, float height);
 
     void init();
-    void update();
+    void update(std::vector<Renderable *> obstacles);
     void render(sf::RenderWindow *w, Camera *c);
     void movePlayer(Facing direction);
 
