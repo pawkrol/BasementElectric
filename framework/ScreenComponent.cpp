@@ -37,7 +37,7 @@ ScreenComponent::ScreenComponent(unsigned int width, unsigned int height) : wind
     this->width = width;
     this->height = height;
 
-    gameContainer = new GameContainer();
+    gameContainer = new GameWorld();
 }
 
 void ScreenComponent::init() {

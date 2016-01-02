@@ -8,33 +8,31 @@
 
 #include <SFML/Graphics/VertexArray.hpp>
 
-#include "include/Entity.h"
-#include "framework/sfmlAddon/AnimatedSprite.h"
-#include "World/Level/Elements/Tile.h"
+#include "../include/Entity.h"
+#include "../framework/sfmlAddon/AnimatedSprite.h"
+#include "PlayerResourceManager.h"
 
 class Player : public Entity{
 private:
+    PlayerResourceManager prm;
+
     const int viewDistance = 128;
     float speed = 34.f;
 
-    bool _isMoving;
+    enum States{
+        IDLE, WALK, HIT
+    };
+    States _state;
 
     sf::Clock frameClock;
     sf::Time deltaTime;
 
-    sf::Texture walkSprites;
-    sf::Texture idleSprites;
-
     AnimatedSprite *animatedSprite;
-    Animation *animation;
-    Animation goingUpAnim;
-    Animation goingDownAnim;
-    Animation goingLeftAnim;
-    Animation goingRightAnim;
-    Animation idleUpAnimation;
-    Animation idleDownAnimation;
-    Animation idleLeftAnimation;
-    Animation idleRightAnimation;
+    Animation *walkAnimation;
+    Animation *idleAnimation;
+    Animation *hitAnimation;
+
+    std::vector<Renderable *> getObstacles(GameWorld *);
 
     void updateIsoPosition(sf::Vector2f pos);
 
@@ -42,21 +40,24 @@ private:
     void update(){};
 
     void setUpAnimations();
-    void setCurrentAnimation();
+    void updateAnimation();
+    void manageState(GameWorld*);
+    void die(GameWorld*);
+
+    void movePlayer();
+    void hitEnemyAnimation();
 
 public:
-    enum Facing{
-        UP, DOWN, LEFT, RIGHT
-    };
-
-    Facing prevFacing;
-
     Player(float x, float y, float width, float height);
 
     void init();
-    void update(std::vector<Renderable *> obstacles);
+    void update(GameWorld *);
     void render(sf::RenderWindow *w, Camera *c);
-    void movePlayer(Facing direction);
+
+    void hit();
+    void move(Facing direction);
+
+    void takeDamage(float damage);
 
     sf::Vector2f getPosition();
 

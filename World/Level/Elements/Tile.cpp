@@ -70,6 +70,10 @@ void Tile::setDarkness(sf::Uint8 darkness) {
     updateDarkness();
 }
 
+sf::Uint8 Tile::getDarkness() {
+    return darkness;
+}
+
 void Tile::updateDarkness() {
     vertexArray[0].color = sf::Color(darkness, darkness, darkness, 255);
     vertexArray[1].color = sf::Color(darkness, darkness, darkness, 255);

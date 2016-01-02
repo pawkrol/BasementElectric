@@ -5,20 +5,20 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 
 set(SOURCE_FILES main.cpp
         framework/ScreenComponent.cpp framework/ScreenComponent.h
-            framework/GameContainer.cpp framework/GameContainer.h
+        framework/GameWorld.cpp framework/GameWorld.h
         include/Renderable.h World/Level/Level.cpp World/Level/Level.h
             World/Level/Elements/Tile.cpp World/Level/Elements/Tile.h
         framework/Camera.cpp framework/Camera.h framework/Input/Commands/Command.h
             framework/Input/InputHandler.cpp framework/Input/InputHandler.h include/Entity.h
         framework/Input/Commands/MoveUpCommand.cpp framework/Input/Commands/MoveUpCommand.h
-            Player.cpp Player.h framework/Input/Commands/MoveDownCommand.cpp
+        World/Player.cpp World/Player.h framework/Input/Commands/MoveDownCommand.cpp
         framework/Input/Commands/MoveDownCommand.h framework/Input/Commands/MoveLeftCommand.cpp
             framework/Input/Commands/MoveLeftCommand.h framework/Input/Commands/MoveRightCommand.cpp
         framework/Input/Commands/MoveRightCommand.h framework/sfmlAddon/Animation.cpp
             framework/sfmlAddon/Animation.h framework/sfmlAddon/AnimatedSprite.cpp
         framework/sfmlAddon/AnimatedSprite.h World/Level/Elements/Block.cpp
             World/Level/Elements/Block.h World/Level/Lights/LightSource.cpp
-        World/Level/Lights/LightSource.h framework/GameException.h )
+        World/Level/Lights/LightSource.h framework/GameException.h World/PlayerResourceManager.cpp World/PlayerResourceManager.h framework/Input/Commands/HitCommand.cpp framework/Input/Commands/HitCommand.h World/Rat.cpp World/Rat.h World/Level/Elements/RatSpawner.cpp World/Level/Elements/RatSpawner.h World/BloodSpot.cpp World/BloodSpot.h include/GroundEntity.h World/MobAI.cpp World/MobAI.h World/Explosion.cpp World/Explosion.h)
 
 add_executable(DudesPatrol ${SOURCE_FILES})
 

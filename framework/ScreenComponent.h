@@ -6,7 +6,7 @@
 #define DUDESPATROL_SCREENCOMPONENT_H
 
 #include <SFML/Graphics.hpp>
-#include "GameContainer.h"
+#include "GameWorld.h"
 
 class ScreenComponent {
 private:
@@ -18,7 +18,7 @@ private:
     sf::RenderWindow *window;
     sf::Event event;
 
-    GameContainer *gameContainer;
+    GameWorld *gameContainer;
 
     void createWindow();
     void closeWindow();

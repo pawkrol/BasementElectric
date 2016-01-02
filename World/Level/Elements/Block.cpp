@@ -8,6 +8,7 @@
 Block::Block(float x, float y) {
     this->x = x;
     this->y = y;
+
     this->darkness = 50;
 
     init();

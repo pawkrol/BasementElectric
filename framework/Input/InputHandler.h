@@ -16,6 +16,7 @@ private:
     Command *buttonD;
     Command *buttonS;
     Command *buttonA;
+    Command *buttonReturn;
 
     sf::Event event;
 

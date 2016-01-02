@@ -10,7 +10,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "Elements/Tile.h"
-#include "../../Player.h"
+#include "../../World/Player.h"
 
 //forward declaration
 class LightSource;
@@ -29,6 +29,7 @@ private:
     int height;
 
     sf::Vector2f playerSpawn;
+    sf::Vector2f ratSpawner;
 
     void init();
     void renderLayer(int layer, sf::RenderWindow *w, Camera *c);
@@ -43,12 +44,14 @@ public:
 
     void setTile(sf::Vector2i pos, int layer, Tile *tile);
     std::vector<Renderable *> getObstacles();
+    std::vector<Renderable *> getObstaclesAround(Entity *entity);
 
-    Tile* getTile(sf::Vector2i pos);
-    Tile* getTile(int x, int y);
+    Tile* getTile(int layer, sf::Vector2i pos);
+    Tile* getTile(int layer, int x, int y);
     sf::Vector2i getSize();
 
     sf::Vector2f getPlayerSpawnPoint();
+    sf::Vector2f getRatSpawnerPoint();
 
     Tile* operator()(int layer, int element);
 

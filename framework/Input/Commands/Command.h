@@ -6,7 +6,7 @@
 #define DUDESPATROL_COMMAND_H
 
 
-#include "../../../Player.h"
+#include "../../../World/Player.h"
 
 class Command {
 public:

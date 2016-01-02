@@ -66,13 +66,13 @@ void LightSource::setDarknessLevels() {
         for (int x = 0; x < levelWidth; ++x ){
             if ((from = (*level)(0, x + y * levelWidth)) != NULL) {
                 from->update();
-                to = level->getTile((int)this->x, (int)this->y);
+                to = level->getTile(0, (int)this->x, (int)this->y);
                 if (to != NULL)
                     calcDarkness(from, to);
             }
             if ((from = (*level)(1, x + y * levelWidth)) != NULL) {
                 from->update();
-                to = level->getTile((int)this->x, (int)this->y);
+                to = level->getTile(0, (int)this->x, (int)this->y);
                 if (to != NULL)
                     calcDarkness(from, to);
             }

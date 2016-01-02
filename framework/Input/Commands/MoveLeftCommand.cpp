@@ -7,5 +7,5 @@
 MoveLeftCommand::~MoveLeftCommand() { }
 
 void MoveLeftCommand::execute(Player &player) {
-    player.movePlayer(player.LEFT);
+    player.move(player.LEFT);
 }

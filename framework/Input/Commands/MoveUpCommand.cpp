@@ -9,5 +9,5 @@ MoveUpCommand::~MoveUpCommand() {
 }
 
 void MoveUpCommand::execute(Player &player) {
-    player.movePlayer(player.UP);
+    player.move(player.UP);
 }

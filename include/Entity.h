@@ -5,37 +5,55 @@
 #ifndef DUDESPATROL_ENTITY_H
 #define DUDESPATROL_ENTITY_H
 
-#include "../include/Renderable.h"
+#include "Renderable.h"
+
+class GameWorld;
 
 class Entity : public Renderable{
 protected:
-    float speed = 0.83;
     sf::Vector2f moveVector;
 
-    bool checkCollision(std::vector<Renderable *> obstacles){
+    virtual void die(GameWorld*) = 0;
+
+public:
+    enum Facing{
+        UP, DOWN, LEFT, RIGHT
+    };
+    Facing _facing;
+
+    float speed = 22.f;
+    float hp = 20.f;
+
+    bool isMovable = true;
+
+    bool checkCollision(std::vector<Renderable*> obstacles){
         for (Renderable *o: obstacles){
-            o->toCarCords();
-            toCarCords();
+            if (!o->collidable) continue;
 
-            bool collide = o->x + o->width/2 < moveVector.x + width &&
-                           o->x + o->width/3 > moveVector.x &&
-                           o->y + o->width/2 < moveVector.y + height &&
-                           o->y + o->height/3 > moveVector.y;
-
-            o->toIsoCords();
-            toIsoCords();
-
-            if (collide){
-                return collide;
-            }
+            if (checkCollision(o))
+                return true;
         }
 
         return false;
     }
 
-public:
-    virtual void update(std::vector<Renderable *> obstacles) = 0;
+    bool checkCollision(Renderable* o){
+        o->toCarCords();
+        toCarCords();
 
+        bool collide = o->x + o->width/2 < moveVector.x + width &&
+                       o->x + o->width/3 > moveVector.x &&
+                       o->y + o->height/2 < moveVector.y + height &&
+                       o->y + o->height/3 > moveVector.y;
+
+        o->toIsoCords();
+        toIsoCords();
+
+        return collide;
+    }
+
+    virtual void update(GameWorld *) = 0;
+    virtual void takeDamage(float damage) = 0;
     virtual ~Entity(){};
 };
 

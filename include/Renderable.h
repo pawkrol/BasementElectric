@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Texture.hpp>
+
 #include "../framework/Camera.h"
 
 class Renderable : public sf::Drawable, public sf::Transformable{
@@ -18,8 +19,11 @@ protected:
 public:
     float x;
     float y;
+
     float width;
     float height;
+
+    bool collidable = true;
 
     virtual void init() = 0;
     virtual void update() = 0;

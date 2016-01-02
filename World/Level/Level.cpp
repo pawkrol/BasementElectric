@@ -50,14 +50,20 @@ bool Level::load(std::string levelFile) {
             }
 
             if (color == sf::Color::Red){
-                playerSpawn.x = x * Tile::WIDTH/2;
-                playerSpawn.y = y * Tile::HEIGHT/2;
+                playerSpawn.x = x * Tile::WIDTH/2 + Tile::WIDTH/4;
+                playerSpawn.y = y * Tile::HEIGHT/2 + Tile::HEIGHT/4;
                 tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
             }
 
             if (color == sf::Color::Blue){
                 tiles[1][x + y * width] = new Block(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
                 obstacles.push_back(tiles[1][x + y * width]);
+            }
+
+            if (color == sf::Color::Green){
+                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                ratSpawner.x = x * Tile::WIDTH/2;
+                ratSpawner.y = y * Tile::HEIGHT/2;
             }
 
         }
@@ -85,18 +91,18 @@ void Level::render(int layer, sf::RenderWindow *w, Camera *c) {
     renderLayer(layer, w, c);
 }
 
-Tile* Level::getTile(sf::Vector2i pos) {
+Tile* Level::getTile(int layer, sf::Vector2i pos) {
     int index = pos.x + pos.y * width;
-    if (index < width*height)
-        return tiles[0][index];
+    if (index > -1 && index < width*height)
+        return tiles[layer][index];
     else
         return nullptr;
 }
 
-Tile* Level::getTile(int x, int y) {
+Tile* Level::getTile(int layer, int x, int y) {
     int index = x + y * width;
-    if (index < width*height)
-        return tiles[0][index];
+    if (index > -1 && index < width*height)
+        return tiles[layer][index];
     else
         return nullptr;
 }
@@ -114,8 +120,38 @@ std::vector<Renderable *> Level::getObstacles() {
     return obstacles;
 }
 
+std::vector<Renderable *> Level::getObstaclesAround(Entity *entity) {
+    std::vector<Renderable *> obstacles;
+    Tile *tile;
+
+    entity->toCarCords();
+    sf::Vector2f pos((entity->x / (Tile::WIDTH/2)) + 1,
+                     (entity->y / (Tile::HEIGHT/2)) + 1);
+    entity->toIsoCords();
+
+    for (int i = -1; i <= 1; i++){
+        for (int j = -1; j <= 1; j++){
+            if ( i != 0 || j != 0 ){
+                int x = (int)pos.x + j;
+                int y = (int)pos.y + i;
+                tile = getTile(1, x, y);
+
+                if ( tile != nullptr ) {
+                    obstacles.push_back(tile);
+                }
+            }
+        }
+    }
+
+    return obstacles;
+}
+
 sf::Vector2f Level::getPlayerSpawnPoint() {
     return playerSpawn;
+}
+
+sf::Vector2f Level::getRatSpawnerPoint() {
+    return ratSpawner;
 }
 
 void Level::renderLayer(int layer, sf::RenderWindow *w, Camera *c) {
