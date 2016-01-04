@@ -48,6 +48,9 @@ void CollectableHP::render(sf::RenderWindow *w, Camera *c) {
 }
 
 void CollectableHP::manageCollectableFor(GameWorld *gW, Entity *entity) {
+    if (gW->getLevelEffects() != nullptr ){
+        gW->getLevelEffects()->buffGain(sf::Color(255, 30, 30));
+    }
     entity->setHP(entity->getHP() + 5.f);
     gW->removeObstacle(this);
 }

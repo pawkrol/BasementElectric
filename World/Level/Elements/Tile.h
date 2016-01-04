@@ -35,6 +35,8 @@ public:
     void update();
     void render(sf::RenderWindow *w, Camera *c);
 
+    void setColor(sf::Color color);
+
     void setDarkness(sf::Uint8 darkness);
     sf::Uint8 getDarkness();
 };

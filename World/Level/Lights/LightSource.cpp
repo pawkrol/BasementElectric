@@ -51,7 +51,9 @@ void LightSource::update() {
         entity->toIsoCords();
     }
 
-    setDarknessLevels();
+    if (isShining) {
+        setDarknessLevels();
+    }
 }
 
 sf::Vector2f LightSource::getPosition() {
@@ -93,4 +95,8 @@ void LightSource::calcDarkness(Tile* from, Tile *to) {
 
     to->toIsoCords();
     from->toIsoCords();
+}
+
+void LightSource::setShining(bool isShining) {
+    this->isShining = isShining;
 }

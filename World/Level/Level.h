@@ -55,6 +55,8 @@ public:
 
     Tile* operator()(int layer, int element);
 
+    LightSource* getLightSource();
+
     ~Level();
 };
 

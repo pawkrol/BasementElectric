@@ -49,6 +49,9 @@ void CollectableStamina::render(sf::RenderWindow *w, Camera *c) {
 }
 
 void CollectableStamina::manageCollectableFor(GameWorld *gW, Entity *entity) {
+    if (gW->getLevelEffects() != nullptr ){
+        gW->getLevelEffects()->buffGain(sf::Color(128, 255, 0));
+    }
     entity->setStamina(entity->getStamina() + 5.f);
     gW->removeObstacle(this);
 }

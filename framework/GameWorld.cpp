@@ -22,13 +22,14 @@ bool GameWorld::init() {
         ratSpawner = new RatSpawner(ratSpawn.x, ratSpawn.y);
 
         addObstacle(new CollectableStamina(ratSpawn.x + 32, ratSpawn.y + 64));
-        addObstacle(new CollectableHP(ratSpawn.x + 64, ratSpawn.y + 64));
+        addObstacle(new CollectableHP(ratSpawn.x + 192, ratSpawn.y + 64));
 
     } catch (GameException &e){
         printf(e.what());
     }
 
     level->initLights(player);
+    effects = new LevelEffects(level);
 
     addObstacles(level->getObstacles());
     addEntity(player);
@@ -64,6 +65,7 @@ void GameWorld::update() {
     camera->update(player->x, player->y);
 
     level->update();
+    effects->update();
 
     userInterface.update();
 }
@@ -231,6 +233,10 @@ sf::Uint8 GameWorld::getGroundTileDarkness(float x, float y) {
     Tile *tile = level->getTile(0, (int)x, (int)y);
     if (tile == nullptr) return 255;
     else return tile->getDarkness();
+}
+
+LevelEffects* GameWorld::getLevelEffects() {
+    return effects;
 }
 
 GameWorld::~GameWorld() {

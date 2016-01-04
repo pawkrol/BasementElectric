@@ -14,6 +14,8 @@ protected:
     int distance = 0;
     int distanceMult = 1;
 
+    bool isShining = true;
+
     float x;
     float y;
 
@@ -37,6 +39,8 @@ public:
     void setLightDistance(int distance);
 
     void update();
+
+    void setShining(bool isShining);
 
     sf::Vector2f getPosition();
 };

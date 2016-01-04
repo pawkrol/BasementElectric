@@ -47,10 +47,8 @@ void Explosion::update(GameWorld *world) {
 
     if (animation->getCurrentFrameId() == 2){
         if (givesDamage){
-            Player *p = world->getPlayer();
-            double distance = sqrt((x - p->x) * (x - p->x) + (y - p->y) * (y - p->y));
-            if (distance <= damageRange) {
-                p->takeDamage(10);
+            for (Renderable *p : world->getClosestEntities(this, damageRange)) {
+                ((Entity*)p)->takeDamage(10);
             }
             givesDamage = false;
         }

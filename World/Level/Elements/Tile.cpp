@@ -65,6 +65,13 @@ bool Tile::isInWindow(Camera *c) {
     return isX && isY;
 }
 
+void Tile::setColor(sf::Color color) {
+    vertexArray[0].color = color;
+    vertexArray[1].color = color;
+    vertexArray[2].color = color;
+    vertexArray[3].color = color;
+}
+
 void Tile::setDarkness(sf::Uint8 darkness) {
     this->darkness = darkness;
     updateDarkness();

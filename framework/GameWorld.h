@@ -14,6 +14,7 @@
 #include "../World/Rat.h"
 #include "../include/GroundEntity.h"
 #include "UserInterface.h"
+#include "../World/Level/Effects/LevelEffects.h"
 
 class GameWorld {
 private:
@@ -23,6 +24,7 @@ private:
     std::vector<GroundEntity*> groundEntities;
 
     Level *level;
+    LevelEffects *effects;
     Camera *camera;
     Command *command;
 
@@ -61,6 +63,8 @@ public:
     Player* getPlayer();
 
     sf::Uint8 getGroundTileDarkness(float x, float y);
+
+    LevelEffects* getLevelEffects();
 
     void createCamera(sf::RenderWindow *w);
 };

@@ -164,6 +164,10 @@ void Level::renderLayer(int layer, sf::RenderWindow *w, Camera *c) {
     }
 }
 
+LightSource* Level::getLightSource() {
+    return playerLight;
+}
+
 Tile* Level::operator()(int layer, int element) {
     return tiles[layer][element];
 }
