@@ -13,7 +13,7 @@ Explosion::Explosion(float x, float y, bool givesDamage) {
     this->height = 32;
 
     this->givesDamage = givesDamage;
-    this->damageRange = height/2;
+    this->damageRange = height*4/3;
     this->collidable = false;
 
     toIsoCords();
@@ -35,7 +35,7 @@ void Explosion::init() {
     explosionAnim.addFrame(sf::IntRect(192, 0, 32, 32));
     explosionAnim.addFrame(sf::IntRect(224, 0, 32, 32));
 
-    animation = new AnimatedSprite(sf::seconds(.075f), false, false);
+    animation = new AnimatedSprite(sf::seconds(.09f), false, false);
 
     animation->setPosition(x, y);
     animation->play(explosionAnim);
@@ -45,6 +45,17 @@ void Explosion::update(GameWorld *world) {
     liveTime = clock.restart();
     animation->update(liveTime);
 
+    if (animation->getCurrentFrameId() == 2){
+        if (givesDamage){
+            Player *p = world->getPlayer();
+            double distance = sqrt((x - p->x) * (x - p->x) + (y - p->y) * (y - p->y));
+            if (distance <= damageRange) {
+                p->takeDamage(10);
+            }
+            givesDamage = false;
+        }
+    }
+
     if (!animation->isPlaying()){
         die(world);
         return;
@@ -53,16 +64,9 @@ void Explosion::update(GameWorld *world) {
 
 void Explosion::render(sf::RenderWindow *w, Camera *c) {
     w->draw(*animation);
+    c->shake();
 }
 
 void Explosion::die(GameWorld *world) {
-    if (givesDamage){
-        Player *p = world->getPlayer();
-        double distance = sqrt((x - p->x) * (x - p->x) + (y - p->y) * (y - p->y));
-        if (distance <= damageRange) {
-            p->takeDamage(10);
-        }
-    }
-
     world->removeEntity(this);
 }

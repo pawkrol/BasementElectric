@@ -20,6 +20,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 ////////////////////////////////////////////////////////////
+// ALTERED VERSION
+////////////////////////////////////////////////////////////
 
 #include "AnimatedSprite.h"
 
@@ -185,4 +187,8 @@ void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) con
         states.texture = m_texture;
         target.draw(m_vertices, 4, sf::Quads, states);
     }
+}
+
+std::size_t AnimatedSprite::getCurrentFrameId() {
+    return m_currentFrame;
 }

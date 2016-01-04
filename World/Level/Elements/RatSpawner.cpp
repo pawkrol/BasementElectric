@@ -64,10 +64,10 @@ void RatSpawner::render(sf::RenderWindow *w, Camera *c) {
 }
 
 void RatSpawner::spawn(GameWorld *world) {
-    if (spawnClock.getElapsedTime().asSeconds() > 2 && spawnedMobs < maxSpawnedMobs){
+    if (spawnClock.getElapsedTime().asSeconds() > 6 && spawnedMobs < maxSpawnedMobs){
         spawnClock.restart();
         spawnedMobs++;
-        world->addEntity(new Rat(spawnPoint.x, spawnPoint.y, 16, 16));
+        world->addEntity(new Rat(spawnPoint.x, spawnPoint.y, 32, 32));
     }
 }
 

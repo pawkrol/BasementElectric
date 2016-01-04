@@ -4,6 +4,9 @@
 
 #include "GameWorld.h"
 #include "GameException.h"
+#include "DeadScreen.h"
+#include "../World/CollectableStamina.h"
+#include "../World/CollectableHP.h"
 
 GameWorld::GameWorld() { }
 
@@ -18,6 +21,9 @@ bool GameWorld::init() {
         sf::Vector2f ratSpawn = level->getRatSpawnerPoint();
         ratSpawner = new RatSpawner(ratSpawn.x, ratSpawn.y);
 
+        addObstacle(new CollectableStamina(ratSpawn.x + 32, ratSpawn.y + 64));
+        addObstacle(new CollectableHP(ratSpawn.x + 64, ratSpawn.y + 64));
+
     } catch (GameException &e){
         printf(e.what());
     }
@@ -28,14 +34,19 @@ bool GameWorld::init() {
     addEntity(player);
     addEntity(ratSpawner);
 
+    userInterface.init(player);
+
     return true;
 }
 
 void GameWorld::update() {
-    command = inputHandler.handleInput();
-    if (command){
-        command->execute(*player);
-        command = nullptr;
+
+    if (player->getHP() > 0) {
+        command = inputHandler.handleInput();
+        if (command) {
+            command->execute(*player);
+            command = nullptr;
+        }
     }
 
     for (Entity *ge : groundEntities){
@@ -46,8 +57,15 @@ void GameWorld::update() {
         ((Entity*)e)->update(this);
     }
 
+    for (Renderable *r : renderables){
+        r->update();
+    }
+
     camera->update(player->x, player->y);
+
     level->update();
+
+    userInterface.update();
 }
 
 void GameWorld::render(sf::RenderWindow *w) {
@@ -62,6 +80,16 @@ void GameWorld::render(sf::RenderWindow *w) {
     for (Renderable *r: renderables){
         r->render(w, camera);
     }
+
+    w->setView(w->getDefaultView());
+
+    userInterface.render(w);
+
+    if (player->getHP() <= 0) {
+        DeadScreen deadScreen(w);
+        deadScreen.render(w, camera);
+    }
+
 }
 
 void GameWorld::createCamera(sf::RenderWindow *w) {
@@ -87,8 +115,31 @@ Player* GameWorld::getPlayer(){
     return player;
 }
 
-std::vector<Renderable *> GameWorld::getClosestObstacles(Entity *entity) {
-    return level->getObstaclesAround(entity);
+std::vector<Renderable *> GameWorld::getClosestObstacles(Entity *entity, float range) {
+    std::vector<Renderable *> closestObstacles;
+
+    entity->toCarCords();
+    float ex = entity->x;
+    float ey = entity->y;
+    entity->toIsoCords();
+
+    double distance;
+
+    for (auto *e : obstacles){
+        e->toCarCords();
+        float x = e->x;
+        float y = e->y;
+        e->toIsoCords();
+
+        if (e != entity) {
+            distance = sqrt((x - ex) * (x - ex) + (y - ey) * (y - ey));
+
+            if (distance < range)
+                closestObstacles.push_back(e);
+        }
+    }
+
+    return obstacles;
 }
 
 std::vector<Renderable *> GameWorld::getClosestEntities(Entity *entity, float range) {
@@ -165,12 +216,21 @@ void GameWorld::addObstacles(std::vector<Renderable *> obstacles) {
     setUpRenderables();
 }
 
-sf::Uint8 GameWorld::getGroundTileDarkness(float x, float y) {
-    return level->getTile(0, (int)x, (int)y)->getDarkness();
-}
-
 void GameWorld::addObstacle(Renderable *obstacle) {
     obstacles.push_back(obstacle);
+}
+
+void GameWorld::removeObstacle(Renderable *obstacle) {
+    obstacles.erase(
+            std::remove(obstacles.begin(), obstacles.end(), obstacle),
+            obstacles.end());
+    setUpRenderables();
+}
+
+sf::Uint8 GameWorld::getGroundTileDarkness(float x, float y) {
+    Tile *tile = level->getTile(0, (int)x, (int)y);
+    if (tile == nullptr) return 255;
+    else return tile->getDarkness();
 }
 
 GameWorld::~GameWorld() {

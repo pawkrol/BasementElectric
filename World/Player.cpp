@@ -25,14 +25,21 @@ Player::Player(float x, float y, float width, float height) {
 void Player::init() {
     prm.loadTextures();
 
+    hitTicker.restart();
+
     setUpAnimations();
     toIsoCords();
 }
 
 void Player::update(GameWorld *world) {
+    if (hp <= 0){
+        die(world);
+        return;
+    }
+
     deltaTime = frameClock.restart();
 
-    if (!checkCollision(getObstacles(world)))
+    if (!checkCollision(world))
         updateIsoPosition(moveVector);
 
     updateAnimation();
@@ -40,7 +47,7 @@ void Player::update(GameWorld *world) {
 }
 
 std::vector<Renderable *> Player::getObstacles(GameWorld *gc) {
-    std::vector<Renderable *> obstacles = gc->getClosestObstacles(this);
+    std::vector<Renderable *> obstacles = gc->getClosestObstacles(this, width);
     std::vector<Renderable *> entities = gc->getClosestEntities(this, width);
 
     obstacles.insert(obstacles.end(), entities.begin(), entities.end());
@@ -76,7 +83,7 @@ void Player::manageState(GameWorld *g) {
             if (!animatedSprite->isPlaying())
                 _state = IDLE;
 
-            for (Renderable *e : g->getClosestEntities(this, width*4/3)){
+            for (Renderable *e : g->getClosestEntities(this, width*2/3)){
                 Entity *entity = (Entity *)e;
 
                 if (((entity->_facing == DOWN && _facing == UP) ||
@@ -87,9 +94,14 @@ void Player::manageState(GameWorld *g) {
                     entity->takeDamage(2);
 
                 } else {
-                    if (checkCollision(e))
+                    if (Entity::checkCollision(e))
                         entity->takeDamage(1);
                 }
+            }
+
+            if (hitTicker.getElapsedTime().asSeconds() > .5f) {
+                stamina -= 5.f;
+                hitTicker.restart();
             }
 
             break;
@@ -107,8 +119,7 @@ void Player::setUpAnimations() {
 }
 
 void Player::render(sf::RenderWindow *w, Camera *c) {
-   if (hp > 0)
-        w->draw(*animatedSprite);
+    w->draw(*animatedSprite);
 }
 
 void Player::movePlayer() {
@@ -159,9 +170,11 @@ void Player::hitEnemyAnimation() {
     animatedSprite->play(*hitAnimation);
 }
 
-void Player::hit() { //implement stamina if <= 0 -> cannot hit
-    hitEnemyAnimation();
-    _state = HIT;
+void Player::hit() {
+    if (_state != HIT && stamina > 0) {
+        hitEnemyAnimation();
+        _state = HIT;
+    }
 }
 
 void Player::takeDamage(float damage) {
@@ -169,7 +182,27 @@ void Player::takeDamage(float damage) {
 }
 
 void Player::die(GameWorld *w) {
+    w->removeEntity(this);
+}
 
+bool Player::checkCollision(GameWorld *g) {
+    for (Renderable *o: getObstacles(g)){
+        if (!o->collidable) continue;
+
+        if (Entity::checkCollision(o)) {
+            if (o->collectable){
+                collect(g, o);
+                continue;
+            }
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Player::collect(GameWorld *g, Renderable *r) {
+    r->manageCollectableFor(g, this);
 }
 
 void Player::updateIsoPosition(sf::Vector2f pos) {
@@ -177,6 +210,24 @@ void Player::updateIsoPosition(sf::Vector2f pos) {
         x = pos.x;
         y = pos.y;
     toIsoCords();
+}
+
+float Player::getStamina(){
+    return Player::stamina;
+}
+
+void Player::setStamina(float stamina){
+    if (Player::stamina < Player::fullStamina) {
+        if (stamina > Player::fullStamina){
+            Player::stamina = Player::fullStamina;
+        } else {
+            Player::stamina = stamina;
+        }
+    }
+}
+
+float Player::getFullStamina(){
+    return Player::fullStamina;
 }
 
 sf::Vector2f Player::getPosition() {

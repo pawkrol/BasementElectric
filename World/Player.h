@@ -19,6 +19,9 @@ private:
     const int viewDistance = 128;
     float speed = 34.f;
 
+    float fullStamina = 40.f;
+    float stamina = fullStamina;
+
     enum States{
         IDLE, WALK, HIT
     };
@@ -26,6 +29,8 @@ private:
 
     sf::Clock frameClock;
     sf::Time deltaTime;
+
+    sf::Clock hitTicker;
 
     AnimatedSprite *animatedSprite;
     Animation *walkAnimation;
@@ -46,6 +51,9 @@ private:
 
     void movePlayer();
     void hitEnemyAnimation();
+    void collect(GameWorld *g, Renderable *r);
+
+    bool checkCollision(GameWorld *g);
 
 public:
     Player(float x, float y, float width, float height);
@@ -62,6 +70,11 @@ public:
     sf::Vector2f getPosition();
 
     int getViewDistance();
+
+    float getFullStamina();
+
+    void setStamina(float stamina);
+    float getStamina();
 };
 
 

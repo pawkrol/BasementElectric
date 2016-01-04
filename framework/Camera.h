@@ -18,6 +18,11 @@ private:
     sf::Vector2f size;
     sf::Vector2f center;
 
+    sf::Clock shakeClock;
+    bool isShaking = false;
+    float shakeTime = .2f;
+    float shakeSize = .8f;
+
     sf::RenderWindow *window;
 
 public:
@@ -28,6 +33,7 @@ public:
     sf::Vector2f getSize();
     sf::Vector2f getCenter();
     float getZoom();
+    void shake();
 };
 
 

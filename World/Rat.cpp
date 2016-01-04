@@ -16,6 +16,9 @@ Rat::Rat(float x, float y, float width, float height) {
 
     mobAI = new MobAI(this);
 
+    x_offset = 16;
+    y_offset = 16;
+
     init();
     toIsoCords();
 }
@@ -86,13 +89,19 @@ void Rat::update(GameWorld *world) {
             toIsoCords();
         }
 
-        std::vector<Renderable *> p;
-        p.push_back(world->getPlayer());
-        if (checkCollision(p)) {
+        if (checkCollision(world->getPlayer())) {
             triggered = true;
             explosionClock.restart();
         }
-        p.clear();
+
+        toCarCords();
+        float mx = x / (Tile::WIDTH / 2) + 1;
+        float my = y / (Tile::HEIGHT / 2) + 1;
+        toIsoCords();
+
+        darkness = world->getGroundTileDarkness(mx, my);
+
+        ratWalkSprite->setColor(sf::Color(darkness, darkness, darkness));
     } else {
 
         ratWalkSprite->setColor(sf::Color(255, 0, 0));
@@ -102,16 +111,6 @@ void Rat::update(GameWorld *world) {
         }
         return;
     }
-
-    toCarCords();
-        float mx = x / (Tile::WIDTH/2) + 1;
-        float my = y / (Tile::HEIGHT/2) + 1;
-    toIsoCords();
-
-    darkness = world->getGroundTileDarkness(mx, my);
-
-    if (!triggered)
-        ratWalkSprite->setColor(sf::Color(darkness, darkness, darkness));
 
     deltaTime = frameClock.restart();
     ratWalkSprite->update(deltaTime);
@@ -139,7 +138,7 @@ void Rat::die(GameWorld *w) {
 }
 
 std::vector<Renderable *> Rat::getObstacles(GameWorld *gc) {
-    std::vector<Renderable *> obstacles = gc->getClosestObstacles(this);
+    std::vector<Renderable *> obstacles = gc->getClosestObstacles(this, width);
     std::vector<Renderable *> entities = gc->getClosestEntities(this, width);
 
     obstacles.insert(obstacles.end(), entities.begin(), entities.end());

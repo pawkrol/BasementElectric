@@ -12,7 +12,7 @@
 
 class RatSpawner : public Entity{
 private:
-    int maxSpawnedMobs = 0;
+    int maxSpawnedMobs = 2;
     int spawnedMobs = 0;
 
     sf::Clock spawnClock;

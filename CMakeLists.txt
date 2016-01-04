@@ -18,7 +18,7 @@ set(SOURCE_FILES main.cpp
             framework/sfmlAddon/Animation.h framework/sfmlAddon/AnimatedSprite.cpp
         framework/sfmlAddon/AnimatedSprite.h World/Level/Elements/Block.cpp
             World/Level/Elements/Block.h World/Level/Lights/LightSource.cpp
-        World/Level/Lights/LightSource.h framework/GameException.h World/PlayerResourceManager.cpp World/PlayerResourceManager.h framework/Input/Commands/HitCommand.cpp framework/Input/Commands/HitCommand.h World/Rat.cpp World/Rat.h World/Level/Elements/RatSpawner.cpp World/Level/Elements/RatSpawner.h World/BloodSpot.cpp World/BloodSpot.h include/GroundEntity.h World/MobAI.cpp World/MobAI.h World/Explosion.cpp World/Explosion.h)
+        World/Level/Lights/LightSource.h framework/GameException.h World/PlayerResourceManager.cpp World/PlayerResourceManager.h framework/Input/Commands/HitCommand.cpp framework/Input/Commands/HitCommand.h World/Rat.cpp World/Rat.h World/Level/Elements/RatSpawner.cpp World/Level/Elements/RatSpawner.h World/BloodSpot.cpp World/BloodSpot.h include/GroundEntity.h World/MobAI.cpp World/MobAI.h World/Explosion.cpp World/Explosion.h framework/DeadScreen.cpp framework/DeadScreen.h framework/UserInterface.cpp framework/UserInterface.h World/CollectableStamina.cpp World/CollectableStamina.h World/CollectableHP.cpp World/CollectableHP.h)
 
 add_executable(DudesPatrol ${SOURCE_FILES})
 

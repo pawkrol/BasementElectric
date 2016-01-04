@@ -13,6 +13,7 @@
 #include "../World/Level/Elements/RatSpawner.h"
 #include "../World/Rat.h"
 #include "../include/GroundEntity.h"
+#include "UserInterface.h"
 
 class GameWorld {
 private:
@@ -30,6 +31,7 @@ private:
     RatSpawner *ratSpawner;
 
     InputHandler inputHandler;
+    UserInterface userInterface;
 
     void addRenderable(Renderable *renderable);
     void addRenderables(std::vector<Renderable *> renderables);
@@ -39,12 +41,12 @@ public:
 
     GameWorld();
     ~GameWorld();
-    bool init();
 
+    bool init();
     void update();
     void render(sf::RenderWindow *w);
-    std::vector<Renderable *> getClosestObstacles(Entity *entity);
 
+    std::vector<Renderable *> getClosestObstacles(Entity *entity, float range);
     std::vector<Renderable *> getClosestEntities(Entity *entity, float range);
     void addObstacles(std::vector<Renderable *> obstacles);
 
@@ -52,6 +54,7 @@ public:
     void removeGroundEntity(GroundEntity *entity);
 
     void addObstacle(Renderable *obstacle);
+    void removeObstacle(Renderable *obstacle);
     void addEntity(Entity *entity);
     void removeEntity(Renderable *renderable);
 

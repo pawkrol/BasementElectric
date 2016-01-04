@@ -12,6 +12,9 @@
 
 #include "../framework/Camera.h"
 
+class Entity;
+class GameWorld;
+
 class Renderable : public sf::Drawable, public sf::Transformable{
 protected:
     sf::Texture texture;
@@ -23,7 +26,11 @@ public:
     float width;
     float height;
 
+    float x_offset = 0;
+    float y_offset = 0;
+
     bool collidable = true;
+    bool collectable = false;
 
     virtual void init() = 0;
     virtual void update() = 0;
@@ -39,6 +46,7 @@ public:
         y = (2*y - tx)/2;
     }
 
+    virtual void manageCollectableFor(GameWorld*, Entity *entity){};
 };
 
 

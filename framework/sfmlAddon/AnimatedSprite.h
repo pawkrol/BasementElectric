@@ -20,6 +20,8 @@
 // 3. This notice may not be removed or altered from any source distribution.
 //
 ////////////////////////////////////////////////////////////
+// ALTERED VERSION
+////////////////////////////////////////////////////////////
 
 #ifndef DUDESPATROL_ANIMATEDSPRITE_H
 #define DUDESPATROL_ANIMATEDSPRITE_H
@@ -52,6 +54,7 @@ public:
     bool isLooped() const;
     bool isPlaying() const;
     sf::Time getFrameTime() const;
+    std::size_t getCurrentFrameId();
     void setFrame(std::size_t newFrame, bool resetTime = true);
 
 private:
