@@ -17,6 +17,8 @@ private:
     sf::Clock frameClock;
     sf::Time frameTime;
 
+    bool isClosed = true;
+
     void updateDarkness();
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const{};
@@ -28,7 +30,6 @@ public:
     Side _side;
 
     int id = 0;
-    bool isClosed = true;
 
     Doors(float x, float y, Side side, bool isClosed, int id = 0);
 
@@ -39,6 +40,7 @@ public:
     void setDarkness(sf::Uint8 darkness);
 
     void setClosed(bool isClosed);
+    bool getClosed();
 
     ~Doors();
 };

@@ -22,6 +22,7 @@ private:
     std::vector<Renderable*> obstacles;
     std::vector<Renderable*> entities;
     std::vector<GroundEntity*> groundEntities;
+    std::vector<Renderable*> actionObjects;
 
     Level *level;
     LevelEffects *effects;
@@ -39,6 +40,10 @@ private:
     void addRenderables(std::vector<Renderable *> renderables);
     void setUpRenderables();
     void sortRenderables();
+
+    std::vector<Renderable *> getClosest(Entity *entity, float range,
+                                         std::vector<Renderable *> vec);
+
 public:
 
     GameWorld();
@@ -50,15 +55,20 @@ public:
 
     std::vector<Renderable *> getClosestObstacles(Entity *entity, float range);
     std::vector<Renderable *> getClosestEntities(Entity *entity, float range);
+    std::vector<Renderable *> getClosestActionObjects(Entity *entity, float range);
+
     void addObstacles(std::vector<Renderable *> obstacles);
+    void addObstacle(Renderable *obstacle);
+    void removeObstacle(Renderable *obstacle);
+
+    void addEntity(Entity *entity);
+    void removeEntity(Renderable *renderable);
 
     void addGroundEntity(GroundEntity *entity);
     void removeGroundEntity(GroundEntity *entity);
 
-    void addObstacle(Renderable *obstacle);
-    void removeObstacle(Renderable *obstacle);
-    void addEntity(Entity *entity);
-    void removeEntity(Renderable *renderable);
+    void addActionObject(Renderable *renderable);
+    void removeActionObject(Renderable *renderable);
 
     Player* getPlayer();
 

@@ -49,9 +49,9 @@ void Doors::update() {
     frameTime = frameClock.restart();
     sprite->update(frameTime);
 
-    if (!isClosed && !sprite->isPlaying()){
-        collidable = false;
-    }
+//    if (!isClosed && !sprite->isPlaying()){
+//        collidable = false;
+//    }
 }
 
 void Doors::render(sf::RenderWindow *w, Camera *c) {
@@ -62,8 +62,17 @@ void Doors::setClosed(bool isClosed) {
     this->isClosed = isClosed;
 
     if (isClosed){
-        sprite->play();
+        collidable = true;
+//        sprite->play();
+        sprite->setFrame(0);
+    } else {
+        sprite->setFrame(6);
+        collidable = false;
     }
+}
+
+bool Doors::getClosed(){
+    return isClosed;
 }
 
 void Doors::updateDarkness() {

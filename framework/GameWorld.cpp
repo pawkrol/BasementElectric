@@ -7,6 +7,7 @@
 #include "DeadScreen.h"
 #include "../World/CollectableStamina.h"
 #include "../World/CollectableHP.h"
+#include "../World/Lever.h"
 
 GameWorld::GameWorld() { }
 
@@ -23,6 +24,7 @@ bool GameWorld::init() {
 
         addObstacle(new CollectableStamina(ratSpawn.x + 32, ratSpawn.y + 64));
         addObstacle(new CollectableHP(ratSpawn.x + 16, ratSpawn.y + 64));
+        addActionObject(new Lever(spawn.x - 8 - 32, spawn.y - 8 - 256, false, level->getDoorById(0)));
 
     } catch (GameException &e){
         printf(e.what());
@@ -60,6 +62,10 @@ void GameWorld::update() {
 
     for (Renderable *r : renderables){
         r->update();
+    }
+
+    for (Renderable *r : actionObjects){
+        ((ActionObject*) r)->update(this);
     }
 
     camera->update(player->x, player->y);
@@ -117,7 +123,8 @@ Player* GameWorld::getPlayer(){
     return player;
 }
 
-std::vector<Renderable *> GameWorld::getClosestObstacles(Entity *entity, float range) {
+std::vector<Renderable *> GameWorld::getClosest(Entity *entity, float range,
+                                                std::vector<Renderable *> vec) {
     std::vector<Renderable *> closestObstacles;
 
     entity->toCarCords();
@@ -127,7 +134,7 @@ std::vector<Renderable *> GameWorld::getClosestObstacles(Entity *entity, float r
 
     double distance;
 
-    for (auto *e : obstacles){
+    for (auto *e : vec){
         e->toCarCords();
         float x = e->x;
         float y = e->y;
@@ -141,34 +148,19 @@ std::vector<Renderable *> GameWorld::getClosestObstacles(Entity *entity, float r
         }
     }
 
-    return obstacles;
+    return closestObstacles;
+}
+
+std::vector<Renderable *> GameWorld::getClosestObstacles(Entity *entity, float range) {
+    return getClosest(entity, range, obstacles);
 }
 
 std::vector<Renderable *> GameWorld::getClosestEntities(Entity *entity, float range) {
-    std::vector<Renderable *> closestEntities;
+    return getClosest(entity, range, entities);
+}
 
-    entity->toCarCords();
-        float ex = entity->x;
-        float ey = entity->y;
-    entity->toIsoCords();
-
-    double distance;
-
-    for (auto *e : entities){
-        e->toCarCords();
-            float x = e->x;
-            float y = e->y;
-        e->toIsoCords();
-
-        if (e != entity) {
-            distance = sqrt((x - ex) * (x - ex) + (y - ey) * (y - ey));
-
-            if (distance < range)
-                closestEntities.push_back(e);
-        }
-    }
-
-    return closestEntities;
+std::vector<Renderable *> GameWorld::getClosestActionObjects(Entity *entity, float range) {
+    return getClosest(entity, range, actionObjects);
 }
 
 void GameWorld::addRenderable(Renderable *renderable) {
@@ -196,6 +188,17 @@ void GameWorld::removeGroundEntity(GroundEntity *entity) {
     groundEntities.erase(
             std::remove(groundEntities.begin(), groundEntities.end(), entity),
             groundEntities.end());
+}
+
+void GameWorld::addActionObject(Renderable *renderable) {
+    actionObjects.push_back(renderable);
+    addObstacle(renderable);
+}
+
+void GameWorld::removeActionObject(Renderable *renderable) {
+    actionObjects.erase(
+            std::remove(actionObjects.begin(), actionObjects.end(), renderable),
+            actionObjects.end());
 }
 
 void GameWorld::addEntity(Entity *entity) {

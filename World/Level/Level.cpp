@@ -70,7 +70,7 @@ bool Level::load(std::string levelFile) {
             if (color == sf::Color::White){
                 tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
                 tiles[1][x + y * width] = new Doors(x * Tile::WIDTH/2, y * Tile::HEIGHT/2,
-                                                    Doors::LEFT, true);
+                                                    Doors::LEFT, false);
                 doors.push_back((Doors *)tiles[1][x + y * width]);
                 obstacles.push_back(tiles[1][x + y * width]);
             }

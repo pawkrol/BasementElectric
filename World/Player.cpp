@@ -6,6 +6,7 @@
 
 #include "Player.h"
 #include "../framework/GameWorld.h"
+#include "../include/ActionObject.h"
 
 Player::Player(float x, float y, float width, float height) {
     this->x = x;
@@ -88,8 +89,10 @@ void Player::manageState(GameWorld *g) {
             break;
 
         case HIT:
-            if (!animatedSprite->isPlaying())
+            if (animatedSprite->getAnimation() == hitAnimation &&
+                    !animatedSprite->isPlaying()) {
                 _state = IDLE;
+            }
 
             for (Renderable *e : g->getClosestEntities(this, width*2/3)){
                 Entity *entity = (Entity *)e;
@@ -110,6 +113,20 @@ void Player::manageState(GameWorld *g) {
             if (hitTicker.getElapsedTime().asSeconds() > .5f) {
                 stamina -= 5.f;
                 hitTicker.restart();
+            }
+
+            break;
+
+        case ACTION:
+            if (animatedSprite->getAnimation() == hitAnimation &&
+                    !animatedSprite->isPlaying()) {
+                _state = IDLE;
+
+                for (Renderable *r : g->getClosestActionObjects(this, width)) {
+                    if (Entity::checkCollision(r)) {
+                        ((ActionObject *) r)->action();
+                    }
+                }
             }
 
             break;
@@ -182,6 +199,13 @@ void Player::hit() {
     if (_state != HIT && stamina > 0) {
         hitEnemyAnimation();
         _state = HIT;
+    }
+}
+
+void Player::action() {
+    if (_state != ACTION){
+        hitEnemyAnimation();
+        _state = ACTION;
     }
 }
 

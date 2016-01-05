@@ -8,18 +8,24 @@
 #include "Commands/MoveLeftCommand.h"
 #include "Commands/MoveRightCommand.h"
 #include "Commands/HitCommand.h"
+#include "Commands/ActionCommand.h"
 
 InputHandler::InputHandler() {
     buttonD = new MoveRightCommand();
     buttonA = new MoveLeftCommand();
     buttonW = new MoveUpCommand();
     buttonS = new MoveDownCommand();
+    buttonE = new ActionCommand();
     buttonReturn = new HitCommand();
 }
 
 Command* InputHandler::handleInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)){
         return this->buttonReturn;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+        return this->buttonE;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
@@ -43,5 +49,6 @@ void InputHandler::clear() {
     delete buttonA;
     delete buttonS;
     delete buttonD;
+    delete buttonE;
     delete buttonReturn;
 }
