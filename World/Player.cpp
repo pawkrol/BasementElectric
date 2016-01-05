@@ -13,6 +13,8 @@ Player::Player(float x, float y, float width, float height) {
     this->width = width;
     this->height = height;
 
+    y_offset = 8;
+
     moveVector.x = x;
     moveVector.y = y;
 
@@ -38,6 +40,12 @@ void Player::update(GameWorld *world) {
     }
 
     deltaTime = frameClock.restart();
+
+    if (_state != HIT &&
+            staminaTicker.getElapsedTime().asSeconds() > 10.f){
+        setStamina(Player::stamina + 5.f);
+        staminaTicker.restart();
+    }
 
     if (!checkCollision(world))
         updateIsoPosition(moveVector);

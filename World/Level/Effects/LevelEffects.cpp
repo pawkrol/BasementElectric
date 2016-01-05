@@ -13,18 +13,14 @@ LevelEffects::LevelEffects(Level *level) {
 void LevelEffects::update() {
     levelSize = level->getSize();
 
-    switch (c_effect){
-        case BUFF_EF:
-            buffGainEffect();
-            break;
-
-        case NONE:
-            break;
+    if (c_effect == BUFF_EF){
+        buffGainEffect();
     }
+
 }
 
 void LevelEffects::buffGainEffect() {
-    if (effectTimer.getElapsedTime() >= sf::seconds(.00001f)){
+    if (be.effectTimer.getElapsedTime() >= sf::seconds(.00001f)){
         if (!be.xGone) {
             for (int x = 0; x < levelSize.x; x++) {
                 if ((*level)(0, x + be.buff_y * levelSize.x) != nullptr) {
@@ -56,7 +52,7 @@ void LevelEffects::buffGainEffect() {
             }
         }
 
-        effectTimer.restart();
+        be.effectTimer.restart();
     }
 
     if (be.yGone && be.buff_y == levelSize.y){
@@ -64,6 +60,7 @@ void LevelEffects::buffGainEffect() {
         be.yGone = false;
 
         level->getLightSource()->setShining(true);
+
         c_effect = NONE;
     }
 }
@@ -74,7 +71,7 @@ void LevelEffects::buffGain(sf::Color color) {
     if (c_effect != BUFF_EF){
         level->getLightSource()->setShining(false);
 
-        effectTimer.restart();
+        be.effectTimer.restart();
         be.buff_y = 0;
         be.buff_x = 0;
         c_effect = BUFF_EF;

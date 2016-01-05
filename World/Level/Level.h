@@ -11,6 +11,7 @@
 
 #include "Elements/Tile.h"
 #include "../../World/Player.h"
+#include "Elements/Doors.h"
 
 //forward declaration
 class LightSource;
@@ -20,6 +21,8 @@ private:
     typedef std::vector< Tile * > tilesLayers;
     typedef std::vector< tilesLayers > tiledMap;
     tiledMap tiles;
+
+    std::vector<Doors* > doors;
 
     std::vector<Renderable *> obstacles;
 
@@ -52,6 +55,8 @@ public:
 
     sf::Vector2f getPlayerSpawnPoint();
     sf::Vector2f getRatSpawnerPoint();
+
+    Doors* getDoorById(int id);
 
     Tile* operator()(int layer, int element);
 

@@ -8,6 +8,7 @@
 #include "Lights/LightSource.h"
 #include "Elements/Block.h"
 #include "../../framework/GameException.h"
+#include "Elements/Doors.h"
 
 Level::Level(int width, int height)
         : tiles(2, std::vector< Tile * >((unsigned long) width * height)){
@@ -64,6 +65,14 @@ bool Level::load(std::string levelFile) {
                 tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
                 ratSpawner.x = x * Tile::WIDTH/2;
                 ratSpawner.y = y * Tile::HEIGHT/2;
+            }
+
+            if (color == sf::Color::White){
+                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                tiles[1][x + y * width] = new Doors(x * Tile::WIDTH/2, y * Tile::HEIGHT/2,
+                                                    Doors::LEFT, true);
+                doors.push_back((Doors *)tiles[1][x + y * width]);
+                obstacles.push_back(tiles[1][x + y * width]);
             }
 
         }
@@ -166,6 +175,15 @@ void Level::renderLayer(int layer, sf::RenderWindow *w, Camera *c) {
 
 LightSource* Level::getLightSource() {
     return playerLight;
+}
+
+Doors* Level::getDoorById(int id) {
+    for (Doors *d : doors){
+        if (d->id == id){
+            return d;
+        }
+    }
+    return nullptr;
 }
 
 Tile* Level::operator()(int layer, int element) {

@@ -51,7 +51,7 @@ void ScreenComponent::run() {
 
         checkWindowEvent();
 
-        window->clear(sf::Color::Black);
+        window->clear(sf::Color(16, 18, 11));
 
         gameContainer->update();
         gameContainer->render(window);

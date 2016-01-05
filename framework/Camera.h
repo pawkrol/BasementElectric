@@ -20,8 +20,8 @@ private:
 
     sf::Clock shakeClock;
     bool isShaking = false;
-    float shakeTime = .2f;
-    float shakeSize = .8f;
+    float shakeTime = .3f;
+    float shakeSize = 2.f;
 
     sf::RenderWindow *window;
 

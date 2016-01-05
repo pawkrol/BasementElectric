@@ -31,6 +31,7 @@ private:
     sf::Time deltaTime;
 
     sf::Clock hitTicker;
+    sf::Clock staminaTicker;
 
     AnimatedSprite *animatedSprite;
     Animation *walkAnimation;

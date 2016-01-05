@@ -20,7 +20,7 @@ protected:
     sf::Uint8 defaultDarkness = 0;
     sf::Uint8 darkness;
 
-    void updateDarkness();
+    virtual void updateDarkness();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
     void create();
 
@@ -37,7 +37,7 @@ public:
 
     void setColor(sf::Color color);
 
-    void setDarkness(sf::Uint8 darkness);
+    virtual void setDarkness(sf::Uint8 darkness);
     sf::Uint8 getDarkness();
 };
 

@@ -27,7 +27,7 @@ set(SOURCE_FILES main.cpp
         World/MobAI.h World/Explosion.cpp World/Explosion.h
         framework/DeadScreen.cpp framework/DeadScreen.h framework/UserInterface.cpp
         framework/UserInterface.h World/CollectableStamina.cpp World/CollectableStamina.h
-        World/CollectableHP.cpp World/CollectableHP.h World/Level/Effects/LevelEffects.cpp World/Level/Effects/LevelEffects.h)
+        World/CollectableHP.cpp World/CollectableHP.h World/Level/Effects/LevelEffects.cpp World/Level/Effects/LevelEffects.h World/Level/Elements/Doors.cpp World/Level/Elements/Doors.h)
 
 add_executable(DudesPatrol ${SOURCE_FILES})
 

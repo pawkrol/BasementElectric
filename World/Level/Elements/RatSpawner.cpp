@@ -55,6 +55,8 @@ void RatSpawner::update(GameWorld *world) {
 
     deltaTime = frameClock.restart();
     spawnerSprite->update(deltaTime);
+    sf::Uint8 dark = sf::Uint8(hp * 2 + 55);
+    spawnerSprite->setColor(sf::Color(dark, dark, dark));
     spawnerSprite->setPosition(x, y);
     spawnerSprite->play(animation);
 }
@@ -81,6 +83,7 @@ void RatSpawner::die(GameWorld *w) {
     toIsoCords();
 
     w->removeEntity(this);
+
 }
 
 sf::Vector2f RatSpawner::getSpawnPoint() {

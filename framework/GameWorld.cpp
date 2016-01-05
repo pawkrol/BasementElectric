@@ -13,7 +13,7 @@ GameWorld::GameWorld() { }
 bool GameWorld::init() {
     try {
         level = new Level(32, 32);
-        level->load("res/level2.png");
+        level->load("res/level3.png");
 
         sf::Vector2f spawn = level->getPlayerSpawnPoint();
         player = new Player(spawn.x, spawn.y, 32, 32);
@@ -22,7 +22,7 @@ bool GameWorld::init() {
         ratSpawner = new RatSpawner(ratSpawn.x, ratSpawn.y);
 
         addObstacle(new CollectableStamina(ratSpawn.x + 32, ratSpawn.y + 64));
-        addObstacle(new CollectableHP(ratSpawn.x + 192, ratSpawn.y + 64));
+        addObstacle(new CollectableHP(ratSpawn.x + 16, ratSpawn.y + 64));
 
     } catch (GameException &e){
         printf(e.what());

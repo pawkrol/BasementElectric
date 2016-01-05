@@ -13,8 +13,6 @@ private:
     Level *level;
     sf::Vector2i levelSize;
 
-    sf::Clock effectTimer;
-
     enum Effect{
         NONE, BUFF_EF
     };
@@ -28,12 +26,8 @@ private:
         bool yGone = false;
 
         sf::Color buffGainColor;
+        sf::Clock effectTimer;
     } be;
-
-    struct SpawnerEffect {
-        
-        sf::Color spawnerDeadColor;
-    } se;
 
     void buffGainEffect();
 
@@ -43,8 +37,6 @@ public:
     void update();
 
     void buffGain(sf::Color color);
-
-    void spawnerDead(sf::Color color);
 };
 
 
