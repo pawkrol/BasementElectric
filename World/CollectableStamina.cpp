@@ -4,7 +4,6 @@
 
 #include "CollectableStamina.h"
 #include "../include/Entity.h"
-#include "../framework/GameException.h"
 #include "../framework/GameWorld.h"
 
 CollectableStamina::CollectableStamina(float x, float y) {
@@ -20,11 +19,9 @@ CollectableStamina::CollectableStamina(float x, float y) {
 }
 
 void CollectableStamina::init() {
-    if (!texture.loadFromFile("res/collectCucumber.png")){
-        throw GameException("Exception: Can't load stamina collectable");
-    }
+    texture = GameWorld::wrm->getCollectableStaminaTexture();
 
-    animation.setSpriteSheet(texture);
+    animation.setSpriteSheet(*texture);
     animation.addFrame(sf::IntRect(0, 0, 32, 32));
     animation.addFrame(sf::IntRect(32, 0, 32, 32));
     animation.addFrame(sf::IntRect(64, 0, 32, 32));

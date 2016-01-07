@@ -2,10 +2,10 @@
 // Created by pawkrol on 11/27/15.
 //
 
-#include <iostream>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "Tile.h"
+#include "../../../framework/GameWorld.h"
 
 Tile::Tile() {
     this->x = 0;
@@ -30,9 +30,7 @@ Tile::Tile(float x, float y) {
 }
 
 void Tile::init() {
-    if (!texture.loadFromFile("res/tile.png")){
-        std::cout << "CAN'T LOAD TILE TEXTURE" << std::endl;
-    }
+    texture = GameWorld::wrm->getTileTexture();
 
     toIsoCords();
     setPosition(x, y);
@@ -89,7 +87,7 @@ void Tile::updateDarkness() {
 }
 
 void Tile::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    states.texture = &texture;
+    states.texture = texture;
     target.draw(vertexArray, states);
 }
 

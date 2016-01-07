@@ -16,6 +16,7 @@ private:
     Doors *door;
 
     sf::Uint8 darkness;
+    sf::Texture *texture;
 
     bool _on = false;
 

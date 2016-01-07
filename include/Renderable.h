@@ -17,7 +17,7 @@ class GameWorld;
 
 class Renderable : public sf::Drawable, public sf::Transformable{
 protected:
-    sf::Texture texture;
+    sf::Texture *texture;
 
 public:
     float x;

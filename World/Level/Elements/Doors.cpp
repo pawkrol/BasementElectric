@@ -3,7 +3,7 @@
 //
 
 #include "Doors.h"
-#include "../../../framework/GameException.h"
+#include "../../../framework/GameWorld.h"
 
 Doors::Doors(float x, float y, Side side, bool isClosed, int id) {
     this->x = x;
@@ -20,11 +20,9 @@ Doors::Doors(float x, float y, Side side, bool isClosed, int id) {
 }
 
 void Doors::init() {
-    if (!texture.loadFromFile("res/door.png")){
-        throw GameException("Exception: Can't load door texture");
-    }
+    texture = GameWorld::wrm->getDoorsTexture();
 
-    animation.setSpriteSheet(texture);
+    animation.setSpriteSheet(*texture);
     animation.addFrame(sf::IntRect(0, 0, 32, 32));
     animation.addFrame(sf::IntRect(32, 0, 32, 32));
     animation.addFrame(sf::IntRect(64, 0, 32, 32));

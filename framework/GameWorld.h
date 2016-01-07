@@ -45,6 +45,7 @@ private:
                                          std::vector<Renderable *> vec);
 
 public:
+    static WorldResourceManager *wrm;
 
     GameWorld();
     ~GameWorld();

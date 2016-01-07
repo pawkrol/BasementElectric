@@ -3,7 +3,6 @@
 //
 
 #include "Explosion.h"
-#include "../framework/GameException.h"
 #include "../framework/GameWorld.h"
 
 Explosion::Explosion(float x, float y, bool givesDamage) {
@@ -22,10 +21,9 @@ Explosion::Explosion(float x, float y, bool givesDamage) {
 }
 
 void Explosion::init() {
-    if (!texture.loadFromFile("res/explosion.png"))
-        throw GameException("Exception: Can't load explosion texture");
+    texture = GameWorld::wrm->getExplosionTexture();
 
-    explosionAnim.setSpriteSheet(texture);
+    explosionAnim.setSpriteSheet(*texture);
     explosionAnim.addFrame(sf::IntRect(0, 0, 32, 32));
     explosionAnim.addFrame(sf::IntRect(32, 0, 32, 32));
     explosionAnim.addFrame(sf::IntRect(64, 0, 32, 32));

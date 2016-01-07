@@ -3,7 +3,6 @@
 //
 
 #include "Lever.h"
-#include "../framework/GameException.h"
 #include "../framework/GameWorld.h"
 
 Lever::Lever(float x, float y, bool isOn, Doors *door) {
@@ -20,14 +19,12 @@ Lever::Lever(float x, float y, bool isOn, Doors *door) {
 }
 
 void Lever::init() {
-    if (!texture.loadFromFile("res/lever.png")){
-        throw GameException("Exception: Can't load lever texture");
-    }
+    texture = GameWorld::wrm->getLeverTexture();
 
     onRect = sf::IntRect(0, 0, 32, 32);
     offRect = sf::IntRect(32, 0, 32, 32);
 
-    sprite.setTexture(texture);
+    sprite.setTexture(*texture);
     sprite.setPosition(x, y);
 
     if (_on) {

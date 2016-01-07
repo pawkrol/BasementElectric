@@ -3,7 +3,6 @@
 //
 
 #include "BloodSpot.h"
-#include "../framework/GameException.h"
 #include "Level/Elements/Tile.h"
 #include "../framework/GameWorld.h"
 
@@ -24,8 +23,7 @@ BloodSpot::BloodSpot(float x, float y) {
 }
 
 void BloodSpot::init() {
-    if (!texture.loadFromFile("res/bloodSpot.png"))
-        throw GameException("Exception: Can't load bloodSpot texture");
+    texture = GameWorld::wrm->getBloodSpotTexture();
 
     vertexArray.setPrimitiveType(sf::Quads);
     vertexArray.resize(4);
@@ -72,6 +70,6 @@ void BloodSpot::die(GameWorld *w) {
 }
 
 void BloodSpot::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    states.texture = &texture;
+    states.texture = texture;
     target.draw(vertexArray, states);
 }

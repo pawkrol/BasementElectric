@@ -9,6 +9,7 @@
 #include <SFML/Graphics/VertexArray.hpp>
 
 #include "../../../include/Renderable.h"
+#include "../../WorldResourceManager.h"
 
 class Tile : public Renderable{
 private:

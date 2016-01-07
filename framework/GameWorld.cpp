@@ -9,10 +9,14 @@
 #include "../World/CollectableHP.h"
 #include "../World/Lever.h"
 
+WorldResourceManager* GameWorld::wrm;
+
 GameWorld::GameWorld() { }
 
 bool GameWorld::init() {
     try {
+        wrm = new WorldResourceManager();
+
         level = new Level(32, 32);
         level->load("res/level3.png");
 
@@ -244,6 +248,8 @@ LevelEffects* GameWorld::getLevelEffects() {
 
 GameWorld::~GameWorld() {
     inputHandler.clear();
+
+    delete wrm;
     delete ratSpawner;
     delete player;
     delete level;

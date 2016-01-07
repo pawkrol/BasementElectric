@@ -3,7 +3,6 @@
 //
 
 #include "Rat.h"
-#include "../framework/GameException.h"
 #include "../framework/GameWorld.h"
 #include "BloodSpot.h"
 #include "Explosion.h"
@@ -24,11 +23,9 @@ Rat::Rat(float x, float y, float width, float height) {
 }
 
 void Rat::init() {
-    if (!texture.loadFromFile("res/ratWalk.png")){
-        throw GameException("Exception: Can't load rat texture");
-    }
+    texture = GameWorld::wrm->getRatTexture();
 
-    goingLeftAnim.setSpriteSheet(texture);
+    goingLeftAnim.setSpriteSheet(*texture);
     goingLeftAnim.addFrame(sf::IntRect(0, 0, 32, 32));
     goingLeftAnim.addFrame(sf::IntRect(32, 0, 32, 32));
     goingLeftAnim.addFrame(sf::IntRect(64, 0, 32, 32));
@@ -38,7 +35,7 @@ void Rat::init() {
     goingLeftAnim.addFrame(sf::IntRect(192, 0, 32, 32));
     goingLeftAnim.addFrame(sf::IntRect(224, 0, 32, 32));
 
-    goingUpAnim.setSpriteSheet(texture);
+    goingUpAnim.setSpriteSheet(*texture);
     goingUpAnim.addFrame(sf::IntRect(0, 32, 32, 32));
     goingUpAnim.addFrame(sf::IntRect(32, 32, 32, 32));
     goingUpAnim.addFrame(sf::IntRect(64, 32, 32, 32));
@@ -48,7 +45,7 @@ void Rat::init() {
     goingUpAnim.addFrame(sf::IntRect(192, 32, 32, 32));
     goingUpAnim.addFrame(sf::IntRect(224, 32, 32, 32));
 
-    goingDownAnim.setSpriteSheet(texture);
+    goingDownAnim.setSpriteSheet(*texture);
     goingDownAnim.addFrame(sf::IntRect(0, 64, 32, 32));
     goingDownAnim.addFrame(sf::IntRect(32, 64, 32, 32));
     goingDownAnim.addFrame(sf::IntRect(64, 64, 32, 32));
@@ -58,7 +55,7 @@ void Rat::init() {
     goingDownAnim.addFrame(sf::IntRect(192, 64, 32, 32));
     goingDownAnim.addFrame(sf::IntRect(224, 64, 32, 32));
 
-    goingRightAnim.setSpriteSheet(texture);
+    goingRightAnim.setSpriteSheet(*texture);
     goingRightAnim.addFrame(sf::IntRect(0, 96, 32, 32));
     goingRightAnim.addFrame(sf::IntRect(32, 96, 32, 32));
     goingRightAnim.addFrame(sf::IntRect(64, 96, 32, 32));

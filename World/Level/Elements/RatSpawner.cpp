@@ -3,7 +3,6 @@
 //
 
 #include "RatSpawner.h"
-#include "../../../framework/GameException.h"
 #include "../../../framework/GameWorld.h"
 #include "../../Explosion.h"
 
@@ -23,11 +22,9 @@ RatSpawner::RatSpawner(float x, float y) {
 RatSpawner::~RatSpawner() { }
 
 void RatSpawner::init() {
-    if (!texture.loadFromFile("res/ratSpawner.png")){
-        throw GameException("Exception: Can't load player rat spawner");
-    }
+    texture = GameWorld::wrm->getRatSpawnerTexture();
 
-    animation.setSpriteSheet(texture);
+    animation.setSpriteSheet(*texture);
     animation.addFrame(sf::IntRect(0, 0, 32, 32));
     animation.addFrame(sf::IntRect(32, 0, 32, 32));
     animation.addFrame(sf::IntRect(64, 0, 32, 32));

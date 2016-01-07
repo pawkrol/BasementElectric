@@ -8,7 +8,6 @@
 #include "Lights/LightSource.h"
 #include "Elements/Block.h"
 #include "../../framework/GameException.h"
-#include "Elements/Doors.h"
 
 Level::Level(int width, int height)
         : tiles(2, std::vector< Tile * >((unsigned long) width * height)){
@@ -42,8 +41,8 @@ bool Level::load(std::string levelFile) {
     }
 
     sf::Color color;
-    for (int y = 0; y < height; ++y ){
-        for (int x = 0; x < width; ++x ){
+    for (unsigned int y = 0; y < height; ++y ){
+        for (unsigned int x = 0; x < width; ++x ){
             color = level.getPixel(x, y);
 
             if (color == sf::Color::Black){
@@ -70,7 +69,7 @@ bool Level::load(std::string levelFile) {
             if (color == sf::Color::White){
                 tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
                 tiles[1][x + y * width] = new Doors(x * Tile::WIDTH/2, y * Tile::HEIGHT/2,
-                                                    Doors::LEFT, false);
+                                                    Doors::LEFT, true);
                 doors.push_back((Doors *)tiles[1][x + y * width]);
                 obstacles.push_back(tiles[1][x + y * width]);
             }
