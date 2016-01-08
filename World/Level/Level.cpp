@@ -41,8 +41,8 @@ bool Level::load(std::string levelFile) {
     }
 
     sf::Color color;
-    for (unsigned int y = 0; y < height; ++y ){
-        for (unsigned int x = 0; x < width; ++x ){
+    for (unsigned int y = 0; y < (unsigned int) height; ++y ){
+        for (unsigned int x = 0; x < (unsigned int) width; ++x ){
             color = level.getPixel(x, y);
 
             if (color == sf::Color::Black){
@@ -128,21 +128,22 @@ std::vector<Renderable *> Level::getObstacles() {
     return obstacles;
 }
 
-std::vector<Renderable *> Level::getObstaclesAround(Entity *entity) {
+std::vector<Renderable *> Level::getGroundTilesAround(sf::Vector2f pos) {
     std::vector<Renderable *> obstacles;
     Tile *tile;
 
-    entity->toCarCords();
-    sf::Vector2f pos((entity->x / (Tile::WIDTH/2)) + 1,
-                     (entity->y / (Tile::HEIGHT/2)) + 1);
-    entity->toIsoCords();
+    pos.x /= (Tile::WIDTH/2);
+    pos.y /= (Tile::HEIGHT/2);
+
+    pos.x += 1;
+    pos.y += 1;
 
     for (int i = -1; i <= 1; i++){
         for (int j = -1; j <= 1; j++){
             if ( i != 0 || j != 0 ){
                 int x = (int)pos.x + j;
                 int y = (int)pos.y + i;
-                tile = getTile(1, x, y);
+                tile = getTile(0, x, y);
 
                 if ( tile != nullptr ) {
                     obstacles.push_back(tile);

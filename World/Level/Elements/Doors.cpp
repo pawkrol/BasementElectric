@@ -48,7 +48,7 @@ void Doors::update() {
     sprite->update(frameTime);
 
 //    if (!isClosed && !sprite->isPlaying()){
-//        collidable = false;
+//        sprite->setFrame(6);
 //    }
 }
 
@@ -61,9 +61,9 @@ void Doors::setClosed(bool isClosed) {
 
     if (isClosed){
         collidable = true;
-//        sprite->play();
         sprite->setFrame(0);
     } else {
+//        sprite->play();
         sprite->setFrame(6);
         collidable = false;
     }

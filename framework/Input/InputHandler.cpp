@@ -9,6 +9,7 @@
 #include "Commands/MoveRightCommand.h"
 #include "Commands/HitCommand.h"
 #include "Commands/ActionCommand.h"
+#include "Commands/AOECommand.h"
 
 InputHandler::InputHandler() {
     buttonD = new MoveRightCommand();
@@ -17,11 +18,14 @@ InputHandler::InputHandler() {
     buttonS = new MoveDownCommand();
     buttonE = new ActionCommand();
     buttonReturn = new HitCommand();
+    buttonSpace = new AOECommand();
 }
 
 Command* InputHandler::handleInput() {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)){
         return this->buttonReturn;
+    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){
+        return this->buttonSpace;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
@@ -51,4 +55,5 @@ void InputHandler::clear() {
     delete buttonD;
     delete buttonE;
     delete buttonReturn;
+    delete buttonSpace;
 }

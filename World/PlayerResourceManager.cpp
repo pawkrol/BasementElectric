@@ -137,4 +137,6 @@ Animation* PlayerResourceManager::getAnimation(ANIM anim) {
         case HIT_LEFT:
             return &hitLeftAnim;
     }
+
+    return nullptr;
 }

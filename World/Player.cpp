@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "../framework/GameWorld.h"
 #include "../include/ActionObject.h"
+#include "AOEattack.h"
 
 Player::Player(float x, float y, float width, float height) {
     this->x = x;
@@ -14,12 +15,10 @@ Player::Player(float x, float y, float width, float height) {
     this->width = width;
     this->height = height;
 
-    y_offset = -8;
-
     moveVector.x = x;
     moveVector.y = y;
 
-    _facing = DOWN;
+    _facing = UP;
     _state = IDLE;
 
     init();
@@ -100,7 +99,7 @@ void Player::manageState(GameWorld *g) {
                 if (((entity->_facing == DOWN && _facing == UP) ||
                         (entity->_facing == UP && _facing == DOWN) ||
                         (entity->_facing == LEFT && _facing == RIGHT) ||
-                        (entity->_facing == RIGHT && _facing == LEFT)) && isMovable) {
+                        (entity->_facing == RIGHT && _facing == LEFT)) && entity->isMovable) {
 
                     entity->takeDamage(2);
 
@@ -111,8 +110,22 @@ void Player::manageState(GameWorld *g) {
             }
 
             if (hitTicker.getElapsedTime().asSeconds() > .5f) {
-                stamina -= 5.f;
+                setStamina(Player::stamina - 5.f);
                 hitTicker.restart();
+            }
+
+            break;
+
+        case AOEHIT:
+            if (animatedSprite->getAnimation() == hitAnimation &&
+                !animatedSprite->isPlaying()) {
+                _state = IDLE;
+
+                toCarCords();
+                g->addEntityQueue(new AOEattack(x, y));
+                toIsoCords();
+
+                setStamina(Player::stamina - 20.f);
             }
 
             break;
@@ -202,6 +215,13 @@ void Player::hit() {
     }
 }
 
+void Player::aoeHit() {
+    if (_state != AOEHIT && stamina >= 20.f){
+        hitEnemyAnimation();
+        _state = AOEHIT;
+    }
+}
+
 void Player::action() {
     if (_state != ACTION){
         hitEnemyAnimation();
@@ -249,12 +269,12 @@ float Player::getStamina(){
 }
 
 void Player::setStamina(float stamina){
-    if (Player::stamina < Player::fullStamina) {
-        if (stamina > Player::fullStamina){
-            Player::stamina = Player::fullStamina;
-        } else {
-            Player::stamina = stamina;
-        }
+    if (stamina > Player::fullStamina){
+        Player::stamina = Player::fullStamina;
+    } else if (stamina < 0 ){
+        Player::stamina = 0;
+    } else {
+        Player::stamina = stamina;
     }
 }
 

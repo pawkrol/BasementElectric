@@ -8,6 +8,7 @@
 #include "../World/CollectableStamina.h"
 #include "../World/CollectableHP.h"
 #include "../World/Lever.h"
+#include "../World/AOEattack.h"
 
 WorldResourceManager* GameWorld::wrm;
 
@@ -55,6 +56,11 @@ void GameWorld::update() {
             command = nullptr;
         }
     }
+
+    for (Entity *e : entityQueue){
+        addEntity(e);
+    }
+    entityQueue.clear();
 
     for (Entity *ge : groundEntities){
         ge->update(this);
@@ -167,6 +173,10 @@ std::vector<Renderable *> GameWorld::getClosestActionObjects(Entity *entity, flo
     return getClosest(entity, range, actionObjects);
 }
 
+std::vector<Renderable *> GameWorld::getClosestGroundTiles(sf::Vector2f pos) {
+    return level->getGroundTilesAround(pos);
+}
+
 void GameWorld::addRenderable(Renderable *renderable) {
     renderables.push_back(renderable);
 }
@@ -216,6 +226,10 @@ void GameWorld::removeEntity(Renderable *renderable) {
             std::remove(entities.begin(), entities.end(), renderable),
             entities.end());
     setUpRenderables();
+}
+
+void GameWorld::addEntityQueue(Entity *entity) {
+    entityQueue.push_back(entity);
 }
 
 void GameWorld::addObstacles(std::vector<Renderable *> obstacles) {

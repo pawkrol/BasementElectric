@@ -30,7 +30,8 @@ set(SOURCE_FILES main.cpp
         World/CollectableHP.cpp World/CollectableHP.h World/Level/Effects/LevelEffects.cpp
         World/Level/Effects/LevelEffects.h World/Level/Elements/Doors.cpp World/Level/Elements/Doors.h
         World/Lever.cpp World/Lever.h framework/Input/Commands/ActionCommand.cpp
-        framework/Input/Commands/ActionCommand.h include/ActionObject.h World/WorldResourceManager.cpp World/WorldResourceManager.h)
+        framework/Input/Commands/ActionCommand.h include/ActionObject.h
+        World/WorldResourceManager.cpp World/WorldResourceManager.h include/Mob.h World/AOEattack.cpp World/AOEattack.h framework/Input/Commands/AOECommand.cpp framework/Input/Commands/AOECommand.h)
 
 add_executable(DudesPatrol ${SOURCE_FILES})
 

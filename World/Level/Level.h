@@ -47,7 +47,7 @@ public:
 
     void setTile(sf::Vector2i pos, int layer, Tile *tile);
     std::vector<Renderable *> getObstacles();
-    std::vector<Renderable *> getObstaclesAround(Entity *entity);
+    std::vector<Renderable *> getGroundTilesAround(sf::Vector2f pos);
 
     Tile* getTile(int layer, sf::Vector2i pos);
     Tile* getTile(int layer, int x, int y);

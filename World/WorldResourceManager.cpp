@@ -17,6 +17,7 @@ WorldResourceManager::WorldResourceManager() {
     loadBlob(collectableHPTexture, "res/collectTomato.png");
     loadBlob(collectableStaminaTexture, "res/collectCucumber.png");
     loadBlob(leverTexture, "res/lever.png");
+    loadBlob(aoeTexture, "res/aoe.png");
 }
 
 void WorldResourceManager::loadBlob(sf::Texture *texture, const char *location) {
@@ -65,6 +66,10 @@ sf::Texture* WorldResourceManager::getLeverTexture() {
     return leverTexture;
 }
 
+sf::Texture* WorldResourceManager::getAOETexture() {
+    return aoeTexture;
+}
+
 WorldResourceManager::~WorldResourceManager() {
     delete tileTexture;
     delete blockTexture;
@@ -76,4 +81,5 @@ WorldResourceManager::~WorldResourceManager() {
     delete collectableHPTexture;
     delete collectableStaminaTexture;
     delete leverTexture;
+    delete aoeTexture;
 }

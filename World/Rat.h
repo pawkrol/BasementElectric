@@ -5,12 +5,12 @@
 #ifndef DUDESPATROL_RAT_H
 #define DUDESPATROL_RAT_H
 
-#include "../include/Entity.h"
+#include "../include/Mob.h"
 #include "../framework/sfmlAddon/Animation.h"
 #include "../framework/sfmlAddon/AnimatedSprite.h"
 #include "MobAI.h"
 
-class Rat : public Entity{
+class Rat : public Mob{
 private:
     bool triggered = false;
 

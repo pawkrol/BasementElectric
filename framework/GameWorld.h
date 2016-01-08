@@ -23,6 +23,7 @@ private:
     std::vector<Renderable*> entities;
     std::vector<GroundEntity*> groundEntities;
     std::vector<Renderable*> actionObjects;
+    std::vector<Entity *> entityQueue;
 
     Level *level;
     LevelEffects *effects;
@@ -57,6 +58,7 @@ public:
     std::vector<Renderable *> getClosestObstacles(Entity *entity, float range);
     std::vector<Renderable *> getClosestEntities(Entity *entity, float range);
     std::vector<Renderable *> getClosestActionObjects(Entity *entity, float range);
+    std::vector<Renderable *> getClosestGroundTiles(sf::Vector2f pos);
 
     void addObstacles(std::vector<Renderable *> obstacles);
     void addObstacle(Renderable *obstacle);
@@ -64,6 +66,7 @@ public:
 
     void addEntity(Entity *entity);
     void removeEntity(Renderable *renderable);
+    void addEntityQueue(Entity *entity);
 
     void addGroundEntity(GroundEntity *entity);
     void removeGroundEntity(GroundEntity *entity);

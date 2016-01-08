@@ -23,7 +23,7 @@ private:
     float stamina = fullStamina;
 
     enum States{
-        IDLE, WALK, HIT, ACTION
+        IDLE, WALK, HIT, AOEHIT, ACTION
     };
     States _state;
 
@@ -66,6 +66,7 @@ public:
     void hit();
     void move(Facing direction);
     void action();
+    void aoeHit();
 
     void takeDamage(float damage);
 
