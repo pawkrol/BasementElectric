@@ -7,7 +7,7 @@
 
 
 #include <SFML/Graphics/VertexArray.hpp>
-#include "../include/GroundEntity.h"
+#include "../../include/GroundEntity.h"
 
 class BloodSpot : public GroundEntity{
 private:

@@ -6,11 +6,12 @@
 #define DUDESPATROL_MOBAI_H
 
 
-#include "Player.h"
+#include "../Player.h"
+#include "Rat.h"
 
-class MobAI {
+class RatAI {
 private:
-    Entity *mob;
+    Rat *mob;
     sf::Clock ticker;
 
     int dir;
@@ -19,7 +20,7 @@ private:
     std::vector<Renderable *> getMobObstacles(GameWorld *);
 
 public:
-    MobAI(Entity *mob);
+    RatAI(Rat* mob);
 
     sf::Vector2f getMoveTo(GameWorld *, float deltaTime);
 };

@@ -29,6 +29,7 @@ private:
 
     sf::Clock frameClock;
     sf::Time deltaTime;
+    sf::Time sinceLastAOE = sf::seconds(.5f);
 
     sf::Clock hitTicker;
     sf::Clock staminaTicker;

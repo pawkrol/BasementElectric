@@ -3,9 +3,10 @@
 //
 
 #include "Rat.h"
-#include "../framework/GameWorld.h"
-#include "BloodSpot.h"
-#include "Explosion.h"
+#include "../../framework/GameWorld.h"
+#include "../EffectEntities/BloodSpot.h"
+#include "../EffectEntities/Explosion.h"
+#include "RatAI.h"
 
 Rat::Rat(float x, float y, float width, float height) {
     this->x = x;
@@ -13,7 +14,7 @@ Rat::Rat(float x, float y, float width, float height) {
     this->width = width;
     this->height = height;
 
-    mobAI = new MobAI(this);
+    mobAI = new RatAI(this);
 
     x_offset = 16;
     y_offset = 16;
@@ -160,5 +161,6 @@ void Rat::setAnimation(sf::Vector2f oldPosition) {
 }
 
 Rat::~Rat() {
-
+    delete mobAI;
+    delete ratWalkSprite;
 }

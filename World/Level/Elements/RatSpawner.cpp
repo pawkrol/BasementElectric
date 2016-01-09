@@ -4,7 +4,7 @@
 
 #include "RatSpawner.h"
 #include "../../../framework/GameWorld.h"
-#include "../../Explosion.h"
+#include "../../EffectEntities/Explosion.h"
 
 RatSpawner::RatSpawner(float x, float y) {
     this->x = x;
@@ -66,7 +66,7 @@ void RatSpawner::spawn(GameWorld *world) {
     if (spawnClock.getElapsedTime().asSeconds() > 6 && spawnedMobs < maxSpawnedMobs){
         spawnClock.restart();
         spawnedMobs++;
-        world->addEntity(new Rat(spawnPoint.x, spawnPoint.y, 32, 32));
+        world->addEntityQueue(new Rat(spawnPoint.x, spawnPoint.y, 32, 32));
     }
 }
 

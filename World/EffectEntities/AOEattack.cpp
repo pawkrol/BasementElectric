@@ -3,7 +3,7 @@
 //
 
 #include "AOEattack.h"
-#include "../framework/GameWorld.h"
+#include "../../framework/GameWorld.h"
 
 AOEattack::AOEattack(float x, float y) {
     this->x = x;
@@ -48,8 +48,8 @@ void AOEattack::update(GameWorld *world) {
         return;
     }
 
-    if (sprite->getCurrentFrameId() == 2){
-            for (Renderable *p : world->getClosestEntities(this, 64)) {
+    if (sprite->getCurrentFrameId() == 1){
+            for (Renderable *p : world->getClosestEntities(this, _damageRange)) {
                 if (((Entity *) p)->isMovable && p != world->getPlayer()) {
                     ((Entity *) p)->takeDamage(20);
                 }
@@ -63,6 +63,7 @@ void AOEattack::update(GameWorld *world) {
 }
 
 void AOEattack::render(sf::RenderWindow *w, Camera *c) {
+    c->shake();
     for (sf::Vector2f pos : positions) {
         sprite->setPosition(pos);
         w->draw(*sprite);

@@ -5,9 +5,9 @@
 #ifndef DUDESPATROL_EXPLOSION_H
 #define DUDESPATROL_EXPLOSION_H
 
-#include "../include/Entity.h"
-#include "../framework/sfmlAddon/Animation.h"
-#include "../framework/sfmlAddon/AnimatedSprite.h"
+#include "../../include/Entity.h"
+#include "../../framework/sfmlAddon/Animation.h"
+#include "../../framework/sfmlAddon/AnimatedSprite.h"
 
 class Explosion : public Entity{
 private:

@@ -8,6 +8,7 @@
 #include "Lights/LightSource.h"
 #include "Elements/Block.h"
 #include "../../framework/GameException.h"
+#include "Elements/RatSpawner.h"
 
 Level::Level(int width, int height)
         : tiles(2, std::vector< Tile * >((unsigned long) width * height)){
@@ -62,8 +63,7 @@ bool Level::load(std::string levelFile) {
 
             if (color == sf::Color::Green){
                 tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
-                ratSpawner.x = x * Tile::WIDTH/2;
-                ratSpawner.y = y * Tile::HEIGHT/2;
+                entities.push_back(new RatSpawner(x * Tile::WIDTH/2, y * Tile::HEIGHT/2));
             }
 
             if (color == sf::Color::White){
@@ -159,8 +159,8 @@ sf::Vector2f Level::getPlayerSpawnPoint() {
     return playerSpawn;
 }
 
-sf::Vector2f Level::getRatSpawnerPoint() {
-    return ratSpawner;
+std::vector<Entity *> Level::getEntities() {
+    return entities;
 }
 
 void Level::renderLayer(int layer, sf::RenderWindow *w, Camera *c) {

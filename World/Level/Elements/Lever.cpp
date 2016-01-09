@@ -3,7 +3,7 @@
 //
 
 #include "Lever.h"
-#include "../framework/GameWorld.h"
+#include "../../../framework/GameWorld.h"
 
 Lever::Lever(float x, float y, bool isOn, Doors *door) {
     this->x = x;

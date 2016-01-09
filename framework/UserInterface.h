@@ -7,11 +7,21 @@
 
 
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "../World/Player.h"
 
 class UserInterface {
 private:
     Player *player;
+
+    sf::RectangleShape whiteScreen;
+    sf::Uint8 alpha = 40;
+
+    sf::Clock whiteScreenTimer;
+    sf::Time deltaTime;
+
+    bool isWhiteScreen = false;
+    float whiteAliveTime = 2.f;
 
     sf::Texture uiTexture;
 
@@ -32,6 +42,7 @@ private:
     float x_soffset;
     float x_sfpos;
 
+    float prevPlayerHP;
     float playerHP;
     float fullPlayerHP;
 

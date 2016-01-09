@@ -7,9 +7,10 @@
 
 
 #include <SFML/Graphics/Sprite.hpp>
-#include "../include/Renderable.h"
-#include "Level/Elements/Doors.h"
-#include "../include/ActionObject.h"
+
+#include "../../../include/Renderable.h"
+#include "../../../include/ActionObject.h"
+#include "Doors.h"
 
 class Lever : public ActionObject{
 private:

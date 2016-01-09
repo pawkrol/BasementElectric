@@ -6,11 +6,13 @@
 #define DUDESPATROL_AOEATTACK_H
 
 
-#include "../include/Entity.h"
-#include "../framework/sfmlAddon/AnimatedSprite.h"
+#include "../../include/Entity.h"
+#include "../../framework/sfmlAddon/AnimatedSprite.h"
 
 class AOEattack : public Entity{
 private:
+    float const _damageRange = 48;
+
     std::vector<sf::Vector2f> positions;
 
     AnimatedSprite *sprite;

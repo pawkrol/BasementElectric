@@ -3,8 +3,8 @@
 //
 
 #include "BloodSpot.h"
-#include "Level/Elements/Tile.h"
-#include "../framework/GameWorld.h"
+#include "../Level/Elements/Tile.h"
+#include "../../framework/GameWorld.h"
 
 BloodSpot::BloodSpot(float x, float y) {
     this->x = x;

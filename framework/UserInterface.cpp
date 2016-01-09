@@ -14,6 +14,7 @@ void UserInterface::init(Player *player) {
     this->player = player;
     fullPlayerHP = player->getFullHP() / 5;
     fullPlayerStamina = player->getFullStamina() / 10;
+    prevPlayerHP = fullPlayerHP;
 
     if (!uiTexture.loadFromFile("res/ui.png"))
         throw GameException("Exception: Can't load ui");
@@ -41,18 +42,45 @@ void UserInterface::init(Player *player) {
     emptyPlus.setTexture(uiTexture);
     emptyPlus.setTextureRect(sf::IntRect(64, 32, 32, 32));
     emptyPlus.setScale(zoom, zoom);
+
+    whiteScreen.setPosition(0, 0);
 }
 
 void UserInterface::update() {
+    deltaTime += whiteScreenTimer.restart();
+    if (isWhiteScreen){
+
+        alpha -= alpha * deltaTime.asSeconds()/100;
+
+        if (alpha < 0) alpha = 0;
+
+        if (alpha == 0 ){//deltaTime >= sf::seconds(whiteAliveTime)){
+            isWhiteScreen = false;
+            alpha = 40;
+        }
+    }
+
+
     playerHP = player->getHP() / 5;
     if (playerHP < 0) playerHP = 0;
 
     playerStamina = player->getStamina() / 10;
     if (playerStamina < 0) playerStamina = 0;
+
+    if (prevPlayerHP > playerHP){
+        isWhiteScreen = true;
+        prevPlayerHP = playerHP;
+    }
 }
 
 void UserInterface::render(sf::RenderWindow *window) {
     sf::Vector2u windowSize = window->getSize();
+
+    whiteScreen.setSize(sf::Vector2f(windowSize.x, windowSize.y));
+    if (isWhiteScreen){
+        whiteScreen.setFillColor(sf::Color(255, 10, 10, alpha));
+        window->draw(whiteScreen);
+    }
 
     int j = 0;
     for (; j < int(playerHP); j++) {

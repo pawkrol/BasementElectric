@@ -9,7 +9,7 @@
 #include "Entity.h"
 
 class Mob : public Entity{
-    friend class MobAI;
+    friend class RatAI;
 };
 
 

@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "../framework/GameWorld.h"
 #include "../include/ActionObject.h"
-#include "AOEattack.h"
+#include "EffectEntities/AOEattack.h"
 
 Player::Player(float x, float y, float width, float height) {
     this->x = x;
@@ -64,6 +64,8 @@ std::vector<Renderable *> Player::getObstacles(GameWorld *gc) {
 }
 
 void Player::manageState(GameWorld *g) {
+    sinceLastAOE += deltaTime;
+
     switch (_state){
         case IDLE:
             if (_facing == DOWN)
@@ -117,16 +119,14 @@ void Player::manageState(GameWorld *g) {
             break;
 
         case AOEHIT:
-            if (animatedSprite->getAnimation() == hitAnimation &&
-                !animatedSprite->isPlaying()) {
-                _state = IDLE;
+            _state = IDLE;
+            sinceLastAOE = sf::Time::Zero;
 
-                toCarCords();
-                g->addEntityQueue(new AOEattack(x, y));
-                toIsoCords();
+            toCarCords();
+            g->addEntityQueue(new AOEattack(x, y));
+            toIsoCords();
 
-                setStamina(Player::stamina - 20.f);
-            }
+            setStamina(Player::stamina - 20.f);
 
             break;
 
@@ -216,8 +216,9 @@ void Player::hit() {
 }
 
 void Player::aoeHit() {
-    if (_state != AOEHIT && stamina >= 20.f){
-        hitEnemyAnimation();
+    if (sinceLastAOE > sf::seconds(.5f) &&
+            _state != AOEHIT && stamina >= 20.f){
+
         _state = AOEHIT;
     }
 }

@@ -23,7 +23,7 @@ private:
     tiledMap tiles;
 
     std::vector<Doors* > doors;
-
+    std::vector<Entity *> entities;
     std::vector<Renderable *> obstacles;
 
     LightSource *playerLight;
@@ -32,7 +32,6 @@ private:
     int height;
 
     sf::Vector2f playerSpawn;
-    sf::Vector2f ratSpawner;
 
     void init();
     void renderLayer(int layer, sf::RenderWindow *w, Camera *c);
@@ -54,7 +53,8 @@ public:
     sf::Vector2i getSize();
 
     sf::Vector2f getPlayerSpawnPoint();
-    sf::Vector2f getRatSpawnerPoint();
+
+    std::vector<Entity *> getEntities();
 
     Doors* getDoorById(int id);
 

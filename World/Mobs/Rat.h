@@ -5,10 +5,11 @@
 #ifndef DUDESPATROL_RAT_H
 #define DUDESPATROL_RAT_H
 
-#include "../include/Mob.h"
-#include "../framework/sfmlAddon/Animation.h"
-#include "../framework/sfmlAddon/AnimatedSprite.h"
-#include "MobAI.h"
+#include "../../include/Mob.h"
+#include "../../framework/sfmlAddon/Animation.h"
+#include "../../framework/sfmlAddon/AnimatedSprite.h"
+
+class RatAI;
 
 class Rat : public Mob{
 private:
@@ -21,7 +22,7 @@ private:
     Animation goingLeftAnim;
     Animation goingRightAnim;
 
-    MobAI *mobAI;
+    RatAI *mobAI;
 
     sf::Clock explosionClock;
     sf::Clock frameClock;

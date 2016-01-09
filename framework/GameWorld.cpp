@@ -7,8 +7,8 @@
 #include "DeadScreen.h"
 #include "../World/CollectableStamina.h"
 #include "../World/CollectableHP.h"
-#include "../World/Lever.h"
-#include "../World/AOEattack.h"
+#include "../World/Level/Elements/Lever.h"
+#include "../World/Mobs/MadPickle.h"
 
 WorldResourceManager* GameWorld::wrm;
 
@@ -24,12 +24,8 @@ bool GameWorld::init() {
         sf::Vector2f spawn = level->getPlayerSpawnPoint();
         player = new Player(spawn.x, spawn.y, 32, 32);
 
-        sf::Vector2f ratSpawn = level->getRatSpawnerPoint();
-        ratSpawner = new RatSpawner(ratSpawn.x, ratSpawn.y);
-
-        addObstacle(new CollectableStamina(ratSpawn.x + 32, ratSpawn.y + 64));
-        addObstacle(new CollectableHP(ratSpawn.x + 16, ratSpawn.y + 64));
         addActionObject(new Lever(spawn.x - 8 - 32, spawn.y - 8 - 256, false, level->getDoorById(0)));
+        addEntity(new MadPickle(spawn.x - 8, spawn.y - 8 - 128, 32, 32));
 
     } catch (GameException &e){
         printf(e.what());
@@ -38,9 +34,9 @@ bool GameWorld::init() {
     level->initLights(player);
     effects = new LevelEffects(level);
 
+    addEntities(level->getEntities());;
     addObstacles(level->getObstacles());
     addEntity(player);
-    addEntity(ratSpawner);
 
     userInterface.init(player);
 
@@ -221,6 +217,13 @@ void GameWorld::addEntity(Entity *entity) {
     setUpRenderables();
 }
 
+void GameWorld::addEntities(std::vector<Entity *> entities) {
+    this->entities.insert(std::end(this->entities),
+                           std::begin(entities), std::end(entities));
+
+    setUpRenderables();
+}
+
 void GameWorld::removeEntity(Renderable *renderable) {
     entities.erase(
             std::remove(entities.begin(), entities.end(), renderable),
@@ -264,7 +267,6 @@ GameWorld::~GameWorld() {
     inputHandler.clear();
 
     delete wrm;
-    delete ratSpawner;
     delete player;
     delete level;
     delete camera;

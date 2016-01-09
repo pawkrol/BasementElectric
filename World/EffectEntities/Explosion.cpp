@@ -3,7 +3,7 @@
 //
 
 #include "Explosion.h"
-#include "../framework/GameWorld.h"
+#include "../../framework/GameWorld.h"
 
 Explosion::Explosion(float x, float y, bool givesDamage) {
     this->x = x;

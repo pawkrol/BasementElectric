@@ -1,11 +1,10 @@
 //
-// Created by pawkrol on 1/1/16.
+// Created by pawkrol on 1/8/16.
 //
 
-#include "MobAI.h"
-#include "../framework/GameWorld.h"
+#include "PickleAI.h"
 
-MobAI::MobAI(Entity *mob) {
+PickleAI::PickleAI(MadPickle *mob) {
     this->mob = mob;
 
     srand((unsigned int)(time(NULL)));
@@ -17,7 +16,7 @@ MobAI::MobAI(Entity *mob) {
     sign = (sign >= 0) ? 1 : -1;
 }
 
-std::vector<Renderable *> MobAI::getMobObstacles(GameWorld *world) {
+std::vector<Renderable *> PickleAI::getMobObstacles(GameWorld *world) {
     std::vector<Renderable *> obstacles = world->getClosestObstacles(mob, mob->width);
     std::vector<Renderable *> entities = world->getClosestEntities(mob, mob->width);
 
@@ -26,13 +25,13 @@ std::vector<Renderable *> MobAI::getMobObstacles(GameWorld *world) {
     return obstacles;
 }
 
-sf::Vector2f MobAI::getMoveTo(GameWorld *world, float deltaTime) {
+sf::Vector2f PickleAI::getMoveTo(GameWorld *world, float deltaTime) {
     Player *player = world->getPlayer();
 
     mob->toCarCords();
     player->toCarCords();
-        sf::Vector2f mobCords(mob->x, mob->y);
-        sf::Vector2f playerCords(player->x, player->y);
+    sf::Vector2f mobCords(mob->x, mob->y);
+    sf::Vector2f playerCords(player->x, player->y);
     mob->toIsoCords();
     player->toIsoCords();
 
@@ -40,7 +39,7 @@ sf::Vector2f MobAI::getMoveTo(GameWorld *world, float deltaTime) {
     float y = mobCords.y - playerCords.y;
 
     double distance = sqrt(x*x + y*y);
-    if (distance < mob->width*3) {
+    if (distance > mob->width && distance < mob->width*5) {
 
         int sx = (x >= 0) ? -1 : 1;
         int sy = (y >= 0) ? -1 : 1;
@@ -50,6 +49,11 @@ sf::Vector2f MobAI::getMoveTo(GameWorld *world, float deltaTime) {
         } else {
             return sf::Vector2f(mobCords.x, mobCords.y + (sy * mob->getSpeed()) * deltaTime);
         }
+
+    } else if (distance < mob->width) {
+        mob->shootAtPlayer(playerCords, world);
+
+        return mobCords;
     } else {
         if (ticker.getElapsedTime().asSeconds() > 3.f) {
             dir = rand() % 2;

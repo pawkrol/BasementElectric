@@ -21,6 +21,8 @@ private:
     sf::Texture *collectableStaminaTexture = new sf::Texture;
     sf::Texture *leverTexture = new sf::Texture;
     sf::Texture *aoeTexture = new sf::Texture;
+    sf::Texture *pickleTexture = new sf::Texture;
+    sf::Texture *pickleShotTexture = new sf::Texture;
 
     void loadBlob(sf::Texture *texture, const char *location);
 
@@ -39,6 +41,8 @@ public:
     sf::Texture* getCollectableStaminaTexture();
     sf::Texture* getLeverTexture();
     sf::Texture* getAOETexture();
+    sf::Texture* getPickleTexture();
+    sf::Texture* getPickleShotTexture();
 };
 
 

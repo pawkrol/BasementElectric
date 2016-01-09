@@ -10,8 +10,7 @@
 #include "Camera.h"
 #include "Input/InputHandler.h"
 #include "../World/Level/Level.h"
-#include "../World/Level/Elements/RatSpawner.h"
-#include "../World/Rat.h"
+#include "../World/Mobs/Rat.h"
 #include "../include/GroundEntity.h"
 #include "UserInterface.h"
 #include "../World/Level/Effects/LevelEffects.h"
@@ -31,8 +30,6 @@ private:
     Command *command;
 
     Player *player;
-
-    RatSpawner *ratSpawner;
 
     InputHandler inputHandler;
     UserInterface userInterface;
@@ -65,6 +62,7 @@ public:
     void removeObstacle(Renderable *obstacle);
 
     void addEntity(Entity *entity);
+    void addEntities(std::vector<Entity *> entities);
     void removeEntity(Renderable *renderable);
     void addEntityQueue(Entity *entity);
 
