@@ -32,7 +32,7 @@ void DeadScreen::init() {
     deadText.setPosition(textWidthPos, y + height/4);
 
     infoText.setFont(font);
-    infoText.setString("Press any key to continue");
+    infoText.setString("Press <esc> key to continue");
     infoText.setCharacterSize(16);
     infoText.setColor(sf::Color::White);
 

@@ -36,6 +36,7 @@ public:
 
     bool isOn();
     void action();
+    void setDoors(Doors *door);
 };
 
 

@@ -24,6 +24,9 @@ private:
     void closeWindow();
     void checkWindowEvent();
 
+    void loadSettings();
+    void saveSettings();
+
 public:
     ScreenComponent(unsigned int width, unsigned int height);
     ~ScreenComponent();

@@ -3,14 +3,23 @@
 //
 
 #include <assert.h>
+#include <fstream>
 #include "ScreenComponent.h"
+#include "GameException.h"
 
 //PRIVATE
 ScreenComponent::ScreenComponent() { }
 
 void ScreenComponent::createWindow() {
     if (window == nullptr) {
-        window = new sf::RenderWindow(sf::VideoMode(width, height), "DudesPatrol",
+        try {
+            loadSettings();
+        } catch (GameException &e){
+            std::cout << e.what() << std::endl;
+            std::cout << "Default setting loaded" << std::endl;
+        }
+
+        window = new sf::RenderWindow(sf::VideoMode(width, height), "Basement Electric",
                                         sf::Style::None);
         window->setVerticalSyncEnabled(true);
         window->setMouseCursorVisible(false);
@@ -26,9 +35,41 @@ void ScreenComponent::checkWindowEvent() {
     if (window->pollEvent(event)){
         if ((event.type == sf::Event::KeyPressed)
                     && (event.key.code == sf::Keyboard::Escape)){
+            try {
+                saveSettings();
+            } catch (GameException &e){
+                std::cout << e.what() << std::endl;
+            }
             closeWindow();
         }
     }
+}
+
+void ScreenComponent::saveSettings() {
+    std::ofstream settings;
+    settings.open("/home/pawkrol/Documents/settings.be", std::ios::out | std::ios::trunc);
+
+    if (!settings.is_open()){
+        throw GameException("Exception: Can't save settings!");
+    }
+
+    settings << width << std::endl << height;
+
+    settings.close();
+}
+
+void ScreenComponent::loadSettings() {
+    std::ifstream settings;
+    settings.open("/home/pawkrol/Documents/settings.be", std::ios::in );
+
+    if (!settings.is_open()){
+        throw GameException("Exception: Can't load settings!");
+    }
+
+    settings >> width;
+    settings >> height;
+
+    settings.close();
 }
 
 //PUBLIC

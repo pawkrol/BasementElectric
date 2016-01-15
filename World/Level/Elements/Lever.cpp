@@ -64,3 +64,7 @@ void Lever::action() {
         sprite.setTextureRect(offRect);
     }
 }
+
+void Lever::setDoors(Doors *door) {
+    this->door = door;
+}

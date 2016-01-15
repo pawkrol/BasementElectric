@@ -19,24 +19,21 @@ bool GameWorld::init() {
         wrm = new WorldResourceManager();
 
         level = new Level(32, 32);
-        level->load("res/level3.png");
-
-        sf::Vector2f spawn = level->getPlayerSpawnPoint();
-        player = new Player(spawn.x, spawn.y, 32, 32);
-
-        addActionObject(new Lever(spawn.x - 8 - 32, spawn.y - 8 - 256, false, level->getDoorById(0)));
-        addEntity(new MadPickle(spawn.x - 8, spawn.y - 8 - 128, 32, 32));
-
+        level->load("res/level4.png");
     } catch (GameException &e){
         printf(e.what());
     }
 
+    sf::Vector2f spawn = level->getPlayerSpawnPoint();
+    player = new Player(spawn.x, spawn.y, 32, 32);
+    addEntity(player);
+
+    addEntities(level->getEntities());
+    addObstacles(level->getObstacles());
+    addActionObjects(level->getActionObjects());
+
     level->initLights(player);
     effects = new LevelEffects(level);
-
-    addEntities(level->getEntities());;
-    addObstacles(level->getObstacles());
-    addEntity(player);
 
     userInterface.init(player);
 
@@ -205,6 +202,12 @@ void GameWorld::addActionObject(Renderable *renderable) {
     addObstacle(renderable);
 }
 
+void GameWorld::addActionObjects(std::vector<Renderable *> actionObjects) {
+    this->actionObjects.insert(std::end(this->actionObjects),
+                                        std::begin(actionObjects), std::end(actionObjects));
+    addObstacles(actionObjects);
+}
+
 void GameWorld::removeActionObject(Renderable *renderable) {
     actionObjects.erase(
             std::remove(actionObjects.begin(), actionObjects.end(), renderable),
@@ -219,7 +222,7 @@ void GameWorld::addEntity(Entity *entity) {
 
 void GameWorld::addEntities(std::vector<Entity *> entities) {
     this->entities.insert(std::end(this->entities),
-                           std::begin(entities), std::end(entities));
+                          std::begin(entities), std::end(entities));
 
     setUpRenderables();
 }

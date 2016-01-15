@@ -2,6 +2,15 @@
 // Created by pawkrol on 11/27/15.
 //
 
+#define PLAYER_SPAWN 255
+#define BLOCK 199
+#define DOOR 155
+#define LEVER 150
+#define TILE 100
+#define PICKLE_SPAWNER 50
+#define RAT_SPAWNER 10
+#define COLLECTABLE 0
+
 #include <SFML/Graphics/Image.hpp>
 
 #include "Level.h"
@@ -9,6 +18,9 @@
 #include "Elements/Block.h"
 #include "../../framework/GameException.h"
 #include "Elements/RatSpawner.h"
+#include "../CollectableHP.h"
+#include "../CollectableStamina.h"
+#include "Elements/PickleSpawner.h"
 
 Level::Level(int width, int height)
         : tiles(2, std::vector< Tile * >((unsigned long) width * height)){
@@ -46,36 +58,75 @@ bool Level::load(std::string levelFile) {
         for (unsigned int x = 0; x < (unsigned int) width; ++x ){
             color = level.getPixel(x, y);
 
-            if (color == sf::Color::Black){
-                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
-            }
+            switch (color.r){
+                case BLOCK:
+                    tiles[1][x + y * width] = new Block(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                    obstacles.push_back(tiles[1][x + y * width]);
+                    break;
 
-            if (color == sf::Color::Red){
-                playerSpawn.x = x * Tile::WIDTH/2 + Tile::WIDTH/4;
-                playerSpawn.y = y * Tile::HEIGHT/2 + Tile::HEIGHT/4;
-                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
-            }
+                case TILE:
+                    tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                    break;
 
-            if (color == sf::Color::Blue){
-                tiles[1][x + y * width] = new Block(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
-                obstacles.push_back(tiles[1][x + y * width]);
-            }
+                case LEVER:
+                    tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                    leverToDoorID[color.g] =
+                            new Lever(x * Tile::WIDTH/2, y * Tile::HEIGHT/2, true, nullptr);
+                    break;
 
-            if (color == sf::Color::Green){
-                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
-                entities.push_back(new RatSpawner(x * Tile::WIDTH/2, y * Tile::HEIGHT/2));
-            }
+                case DOOR:
+                    Doors::Side side;
+                    if (color.b == 1) side = Doors::Side::DOWN;
+                    else if (color.b == 2) side = Doors::Side::UP;
+                    else if (color.b == 3) side = Doors::Side::LEFT;
+                    else side = Doors::Side::RIGHT;
 
-            if (color == sf::Color::White){
-                tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
-                tiles[1][x + y * width] = new Doors(x * Tile::WIDTH/2, y * Tile::HEIGHT/2,
-                                                    Doors::LEFT, true);
-                doors.push_back((Doors *)tiles[1][x + y * width]);
-                obstacles.push_back(tiles[1][x + y * width]);
-            }
+                    tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                    tiles[1][x + y * width] = new Doors(x * Tile::WIDTH/2, y * Tile::HEIGHT/2,
+                                                        side, true, color.g);
 
+                    doors.push_back((Doors *)tiles[1][x + y * width]);
+                    obstacles.push_back(tiles[1][x + y * width]);
+
+                    break;
+
+                case COLLECTABLE:
+                    tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                    if (color.g == 10) {
+                        obstacles.push_back(new CollectableHP(x * Tile::WIDTH/2, y * Tile::HEIGHT/2));
+                    } else if (color.g == 50){
+                        obstacles.push_back(new CollectableStamina(x * Tile::WIDTH/2, y * Tile::HEIGHT/2));
+                    }
+                    break;
+
+                case RAT_SPAWNER:
+                    tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                    entities.push_back(new RatSpawner(x * Tile::WIDTH/2, y * Tile::HEIGHT/2));
+                    break;
+
+                case PICKLE_SPAWNER:
+                    tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                    entities.push_back(new PickleSpawner(x * Tile::WIDTH/2, y * Tile::HEIGHT/2));
+                    break;
+
+                case PLAYER_SPAWN:
+                    playerSpawn.x = x * Tile::WIDTH/2 + Tile::WIDTH/4;
+                    playerSpawn.y = y * Tile::HEIGHT/2 + Tile::HEIGHT/4;
+                    tiles[0][x + y * width] = new Tile(x * Tile::WIDTH/2, y * Tile::HEIGHT/2);
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
+
+    for(auto const& id : leverToDoorID){
+        id.second->setDoors(getDoorById(id.first));
+        actionObjects.push_back(id.second);
+    }
+
+    leverToDoorID.clear();
 
     return true;
 }
@@ -161,6 +212,10 @@ sf::Vector2f Level::getPlayerSpawnPoint() {
 
 std::vector<Entity *> Level::getEntities() {
     return entities;
+}
+
+std::vector<Renderable *> Level::getActionObjects() {
+    return actionObjects;
 }
 
 void Level::renderLayer(int layer, sf::RenderWindow *w, Camera *c) {

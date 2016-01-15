@@ -12,7 +12,7 @@
 class Doors : public Tile{
 private:
     AnimatedSprite *sprite;
-    Animation animation;
+    Animation anim;
 
     sf::Clock frameClock;
     sf::Time frameTime;
@@ -25,7 +25,7 @@ private:
 
 public:
     enum Side {
-        LEFT, RIGHT, UP, DOWN
+        DOWN = 1, UP = 2, LEFT = 3, RIGHT = 4
     };
     Side _side;
 

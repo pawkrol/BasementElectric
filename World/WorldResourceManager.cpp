@@ -20,6 +20,7 @@ WorldResourceManager::WorldResourceManager() {
     loadBlob(aoeTexture, "res/aoe.png");
     loadBlob(pickleTexture, "res/madPickle.png");
     loadBlob(pickleShotTexture, "res/pickleShot.png");
+    loadBlob(pickleSpawnerTexture, "res/picklespawner.png");
 }
 
 void WorldResourceManager::loadBlob(sf::Texture *texture, const char *location) {
@@ -80,6 +81,10 @@ sf::Texture* WorldResourceManager::getPickleShotTexture() {
     return pickleShotTexture;
 }
 
+sf::Texture* WorldResourceManager::getPickleSpawnerTexture(){
+    return pickleSpawnerTexture;
+}
+
 WorldResourceManager::~WorldResourceManager() {
     delete tileTexture;
     delete blockTexture;
@@ -94,4 +99,5 @@ WorldResourceManager::~WorldResourceManager() {
     delete aoeTexture;
     delete pickleTexture;
     delete pickleShotTexture;
+    delete pickleSpawnerTexture;
 }

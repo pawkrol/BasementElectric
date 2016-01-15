@@ -22,17 +22,29 @@ Doors::Doors(float x, float y, Side side, bool isClosed, int id) {
 void Doors::init() {
     texture = GameWorld::wrm->getDoorsTexture();
 
-    animation.setSpriteSheet(*texture);
-    animation.addFrame(sf::IntRect(0, 0, 32, 32));
-    animation.addFrame(sf::IntRect(32, 0, 32, 32));
-    animation.addFrame(sf::IntRect(64, 0, 32, 32));
-    animation.addFrame(sf::IntRect(96, 0, 32, 32));
-    animation.addFrame(sf::IntRect(128, 0, 32, 32));
-    animation.addFrame(sf::IntRect(160, 0, 32, 32));
-    animation.addFrame(sf::IntRect(192, 0, 32, 32));
+    if (_side == RIGHT || _side == LEFT) {
+        anim.setSpriteSheet(*texture);
+        anim.addFrame(sf::IntRect(0, 0, 32, 32));
+        anim.addFrame(sf::IntRect(32, 0, 32, 32));
+        anim.addFrame(sf::IntRect(64, 0, 32, 32));
+        anim.addFrame(sf::IntRect(96, 0, 32, 32));
+        anim.addFrame(sf::IntRect(128, 0, 32, 32));
+        anim.addFrame(sf::IntRect(160, 0, 32, 32));
+        anim.addFrame(sf::IntRect(192, 0, 32, 32));
+
+    } else {
+        anim.setSpriteSheet(*texture);
+        anim.addFrame(sf::IntRect(0, 32, 32, 32));
+        anim.addFrame(sf::IntRect(32, 32, 32, 32));
+        anim.addFrame(sf::IntRect(64, 32, 32, 32));
+        anim.addFrame(sf::IntRect(96, 32, 32, 32));
+        anim.addFrame(sf::IntRect(128, 32, 32, 32));
+        anim.addFrame(sf::IntRect(160, 32, 32, 32));
+        anim.addFrame(sf::IntRect(192, 32, 32, 32));
+    }
 
     sprite = new AnimatedSprite(sf::seconds(.2f), true, false);
-    sprite->setAnimation(animation);
+    sprite->setAnimation(anim);
     sprite->setPosition(x, y);
 
     if (!isClosed){

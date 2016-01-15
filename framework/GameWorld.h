@@ -70,6 +70,7 @@ public:
     void removeGroundEntity(GroundEntity *entity);
 
     void addActionObject(Renderable *renderable);
+    void addActionObjects(std::vector<Renderable *> actionObjects);
     void removeActionObject(Renderable *renderable);
 
     Player* getPlayer();

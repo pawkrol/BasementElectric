@@ -23,6 +23,7 @@ private:
     sf::Texture *aoeTexture = new sf::Texture;
     sf::Texture *pickleTexture = new sf::Texture;
     sf::Texture *pickleShotTexture = new sf::Texture;
+    sf::Texture *pickleSpawnerTexture = new sf::Texture;
 
     void loadBlob(sf::Texture *texture, const char *location);
 
@@ -43,6 +44,7 @@ public:
     sf::Texture* getAOETexture();
     sf::Texture* getPickleTexture();
     sf::Texture* getPickleShotTexture();
+    sf::Texture* getPickleSpawnerTexture();
 };
 
 

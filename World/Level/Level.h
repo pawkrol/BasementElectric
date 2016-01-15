@@ -8,10 +8,12 @@
 #include <iostream>
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <map>
 
 #include "Elements/Tile.h"
 #include "../../World/Player.h"
 #include "Elements/Doors.h"
+#include "Elements/Lever.h"
 
 //forward declaration
 class LightSource;
@@ -22,9 +24,12 @@ private:
     typedef std::vector< tilesLayers > tiledMap;
     tiledMap tiles;
 
+    std::map<int, Lever *> leverToDoorID;
+
     std::vector<Doors* > doors;
     std::vector<Entity *> entities;
     std::vector<Renderable *> obstacles;
+    std::vector<Renderable *> actionObjects;
 
     LightSource *playerLight;
 
@@ -46,15 +51,16 @@ public:
 
     void setTile(sf::Vector2i pos, int layer, Tile *tile);
     std::vector<Renderable *> getObstacles();
+    std::vector<Entity *> getEntities();
+    std::vector<Renderable *> getActionObjects();
     std::vector<Renderable *> getGroundTilesAround(sf::Vector2f pos);
 
     Tile* getTile(int layer, sf::Vector2i pos);
     Tile* getTile(int layer, int x, int y);
+
     sf::Vector2i getSize();
 
     sf::Vector2f getPlayerSpawnPoint();
-
-    std::vector<Entity *> getEntities();
 
     Doors* getDoorById(int id);
 

@@ -31,7 +31,7 @@ set(SOURCE_FILES main.cpp
         World/Level/Effects/LevelEffects.h World/Level/Elements/Doors.cpp World/Level/Elements/Doors.h
         World/Level/Elements/Lever.cpp World/Level/Elements/Lever.h framework/Input/Commands/ActionCommand.cpp
         framework/Input/Commands/ActionCommand.h include/ActionObject.h
-        World/WorldResourceManager.cpp World/WorldResourceManager.h include/Mob.h World/EffectEntities/AOEattack.cpp World/EffectEntities/AOEattack.h framework/Input/Commands/AOECommand.cpp framework/Input/Commands/AOECommand.h World/Mobs/MadPickle.cpp World/Mobs/MadPickle.h World/Mobs/PickleAI.cpp World/Mobs/PickleAI.h World/EffectEntities/PickleShot.cpp World/EffectEntities/PickleShot.h)
+        World/WorldResourceManager.cpp World/WorldResourceManager.h include/Mob.h World/EffectEntities/AOEattack.cpp World/EffectEntities/AOEattack.h framework/Input/Commands/AOECommand.cpp framework/Input/Commands/AOECommand.h World/Mobs/MadPickle.cpp World/Mobs/MadPickle.h World/Mobs/PickleAI.cpp World/Mobs/PickleAI.h World/EffectEntities/PickleShot.cpp World/EffectEntities/PickleShot.h World/Level/Elements/PickleSpawner.cpp World/Level/Elements/PickleSpawner.h)
 
 add_executable(DudesPatrol ${SOURCE_FILES})
 
